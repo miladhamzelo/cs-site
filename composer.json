@@ -1,0 +1,15 @@
+{
+    "name": "root/sinama",
+    "description": "cinemasetareh site",
+    "type": "project",
+    "require": {
+        "wixel/gump": "dev-master",
+        
+    },
+    "authors": [
+        {
+            "name": "mrtdeh",
+            "email": "mrtdeh@gmail.com"
+        }
+    ]
+}

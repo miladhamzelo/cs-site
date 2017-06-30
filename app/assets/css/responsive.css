@@ -1,0 +1,27 @@
+/* Small devices (tablets, 768px and up) */
+
+@media (min-width: @screen-sm-min) {
+    .navbar-header {
+        float: left;
+    }
+}
+
+
+/* Medium devices (desktops, 992px and up) */
+
+@media (min-width: @screen-md-min) {}
+
+
+/* Large devices (large desktops, 1200px and up) */
+
+@media (min-width: @screen-lg-min) {
+    .container {
+        width: 970px;
+    }
+}
+
+@media (min-width: 768px) {
+    .navbar-header {
+        float: left!important;
+    }
+}
