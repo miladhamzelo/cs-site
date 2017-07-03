@@ -1,8 +1,21 @@
+@extends("layouts.master")
+
+
+@section("main")
+
+
 <div id="app">
     <div class="headerb">
         <div class="container">
+            @if($ticketType == 'film')
             <h1 v-text="movie.title.toFaDigit()"></h1>
-            <div class="cat"><?= $data['type'] ?></div>
+            @else
+            <h1 v-text="concert.title.toFaDigit()"></h1>
+            @endif
+
+            @if($ticketType == 'film')
+            <div class="cat">{{ $type }}</div>
+            @endif
             <div class="clearfix"></div>
         </div>
     </div>
@@ -22,20 +35,29 @@
                             <div class="col-sm-6">
                                  عنوان فیلم :
                             </div>
+                            
+                            @if($ticketType == 'concert')
                             <div class="col-sm-6">
-                                {{movie.title.toFaDigit()}}
+                                @{{concert.title.toFaDigit()}}
+                            </div>
+                            @else
+                            <div class="col-sm-6">
+                                @{{movie.title.toFaDigit()}}
+
                             </div>
                             <div class="col-sm-6">
                                  مدت زمان پخش :
                             </div>
                             <div class="col-sm-6">
-                                {{movie.time_out.toFaDigit()}} دقیقه
+                                @{{movie.time_out.toFaDigit()}} دقیقه
                             </div>
+                            @endif
+
                             <div class="col-sm-6">
                                  تاریخ و زمان پخش :
                             </div>
                             <div class="col-sm-6">
-                                {{selectedSans.date}} - {{selectedSans.time}}
+                                @{{selectedSans.date}} - @{{selectedSans.time}}
                             </div>
 
                         </div>
@@ -46,13 +68,13 @@
                                  نام / نام خانوادگی :
                             </div>
                             <div class="col-sm-6">
-                                {{info.name}}
+                                @{{info.name}}
                             </div>
                             <div class="col-sm-6">
                                  شماره تلفن همراه :
                             </div>
                             <div class="col-sm-6">
-                                {{info.mobile}}
+                                @{{info.mobile}}
                             </div>
 
                         </div>
@@ -63,7 +85,7 @@
                                  صندلی های انتخاب شده :
                             </div>
                             <div class="col-sm-6">
-                                {{get_chairs_alpha}}
+                                @{{get_chairs_alpha}}
                             </div>
                         </div>
                         <div class="row padding">
@@ -71,7 +93,11 @@
                                 قیمت صندلی ها :
                             </div>
                             <div class="col-sm-6">
-                                {{ get_movie_price }} تومان
+                                @if($ticketType == 'film')
+                                @{{ get_movie_price }} تومان
+                                @else
+                                @{{ get_concert_prices }} تومان
+                                @endif
                             </div>
                         </div>
                         <div class="row padding">
@@ -79,7 +105,7 @@
                                 تعداد صندلی های انتخاب شده :
                             </div>
                             <div class="col-sm-6">
-                                {{ selectedChairs.length }}
+                                @{{ selectedChairs.length }}
                             </div>
                         </div>
                         <div class="row padding">
@@ -95,7 +121,7 @@
                                 جمع کل :
                             </div>
                             <div class="col-sm-6 ">
-                                {{ total_price }} تومان
+                                @{{ total_price }} تومان
                             </div>
                         </div>
                     </div>
@@ -115,15 +141,19 @@
     <div id="form" class="container" v-show="!showFactor"> 
         <div class="buy">
             <div class="col-md-4">
-                <div class="cover"><img src="<?= base ?>upload/<?= $data['image'] ?>"></div>
+                <div class="cover"><img src="{{ upload }}{{ $image }}"></div>
                 <div class="cast">
                     <ul>
-                        <li>درباره فیلم : <?= $data['des'] ?></li>
-                        <li>کارگردان : <?= $data['director'] ?></li>
-                        <li>تهیه کننده : <?= $data['producer'] ?></li>
-                        <li>سال ساخت : <?= $data['year'] ?></li>
-                        <li>بازیگران : <?= $data['actors'] ?></li>
-                        <li>سایر عوامل : <?= $data['other_agents'] ?></li>
+                        @if($ticketType == 'film')
+                        <li>درباره فیلم : {{ $des }}</li>
+                        <li>کارگردان : {{ $director }}</li>
+                        <li>تهیه کننده : {{ $producer }}</li>
+                        <li>سال ساخت : {{ $year }}</li>
+                        <li>بازیگران : {{ $actors }}</li>
+                        <li>سایر عوامل : {{ $other_agents }}</li>
+                        @else
+                         <li>درباره برنامه : {{ $des }}</li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -154,14 +184,14 @@
                                         <label class="col-sm-3 control-label">نام</label>
                                         <div class="col-sm-9">
                                             <input v-if="!user_id" type="text" v-model="info.name" class="form-control" placeholder="نام و نام خانودگی"> 
-                                            <span v-else class="">{{info.name}}</span>
+                                            <span v-else class="">@{{info.name}}</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">شماره تماس</label>
                                         <div class="col-sm-9">
                                             <input v-if="!user_id" type="text" v-model="info.mobile" class="form-control" placeholder="شماره موبایل"> 
-                                            <span v-else class="">{{info.mobile}}</span>
+                                            <span v-else class="">@{{info.mobile}}</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -190,8 +220,8 @@
                                     صندلی ها
                                 </button>
                                 <div class="box">
-                                        {{get_chairs_alpha}}
-                                 <!--   <span v-for="c in get_sort_selected_chairs" class="lable myblue">{{ c }}</span> -->
+                                        @{{get_chairs_alpha}}
+                                 <!--   <span v-for="c in get_sort_selected_chairs" class="lable myblue">@{{ c }}</span> -->
                                     <span class="lable mygrey" v-show="!selectedChairs.length">
                                         هنوز صندلی انتخاب نشده
                                     </span>
@@ -221,7 +251,7 @@
                 </section>
 
 
-
+                @if($ticketType == 'film')
                 <div style="padding:20px 0"><p >صحنه هایی از فیلم</p>
                    
                         <div class=" row gallery">
@@ -246,6 +276,7 @@
                         </div>
                     
                 </div>
+                @endif
 
 
             </div>
@@ -396,8 +427,8 @@ body{
 
 
 
-<?php GET_SERVER_VALUES() ?>
-<?php GET_APP_JS() ?>
+{{ GET_SERVER_VALUES() }}
+{{ GET_APP_JS() }}
 
 
 
@@ -415,3 +446,6 @@ body{
         });
 //    });
 </script>
+
+
+@endsection

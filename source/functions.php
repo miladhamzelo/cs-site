@@ -1,10 +1,17 @@
 <?php
 
 
+function view($filename, $args=[]){
+
+	global $blade_factory;
+
+	echo $blade_factory->make($filename, $args)->render();
+}
+
 function env($key, $default=""){
-	$env = $_SESSION["env"];
-	if(!empty($env[$key]))
-		return $env[$key];
+	//$env = $_ENV["env"];
+	if(!empty($_ENV[$key]))
+		return $_ENV[$key];
 	return $default;
 }
 

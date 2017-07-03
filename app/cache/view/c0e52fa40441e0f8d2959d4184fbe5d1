@@ -1,0 +1,75 @@
+<?php $__env->startSection("main"); ?>
+
+<div id="app">
+
+    <div id="container">
+
+        <div class="headerb">
+            <div class="container">
+                <h1>
+                    <?php if(!empty( $status )): ?>
+                        پرداخت انجام شد
+                    <?php else: ?>
+                        پرداخت انجام نشد!
+                    <?php endif; ?>
+                </h1>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+
+        <div  class="container"> 
+            <div class="buy">
+
+                <?php if(!empty( $status )): ?>
+                
+                    <p class="alert alert-success">پرداخت انجام شد</p>
+
+                    <ticket-view2 show="true" v-model="ticketData"></ticket-view2>
+                    <button class="btn btn-primary" @click="printTicket">چاپ بلیط</button>
+                    <button class="btn btn-default" @click="saveTicket">ذخیره بلیط</button>
+
+                <?php else: ?>
+                    
+                    <p class="alert alert-danger">پرداخت انجام نشد</p>
+
+                    <?php if( !$isConcert ): ?>
+                        <a href="ticket?id=<?php echo e($mid); ?>">« بازگشت به صفحه خرید بلیط</a>
+                    <?php else: ?>
+                        <a href="ticket?cid=<?php echo e($mid); ?>">« بازگشت به صفحه خرید بلیط</a>
+                    <?php endif; ?>
+
+                <?php endif; ?>
+              
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+<style scoped>
+
+
+.content{
+    min-height: 400px;
+    margin-bottom: 80px
+}
+
+</style>
+
+ <script src="<?php echo e(assets); ?>/html2canvas.js"></script>
+ <script src="<?php echo e(assets); ?>/jspdf.js"></script>
+ 
+<?php echo e(GET_SERVER_VALUES()); ?>
+
+<?php echo e(GET_APP_JS()); ?>
+
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make("layouts.master", array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

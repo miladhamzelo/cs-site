@@ -8,14 +8,14 @@ module.exports = {
 
   data() {
     return {
-      movies :  [],
+   /*   movies :  [],
       concerts :  [],
       nextMovie :  {},
       movieTrailer : {},
       promotions :  [],
       setting :  {},
       news :  [],
-      slider : {},
+      slider : {},*/
 
       mobile : "",
       mobileMsg : "",
@@ -23,10 +23,9 @@ module.exports = {
     }
   },
   created() {
-    console.log("SERVER")
-    console.log(SERVER)
+    console.log("index")
     
-    this.setting = SERVER['setting'] ? JSON.parse(SERVER['setting']) : {}
+  /*  this.setting = SERVER['setting'] ? JSON.parse(SERVER['setting']) : {}
     this.promotions = SERVER['promotions'] ? JSON.parse(SERVER['promotions']) : []
     this.news = SERVER['news'] ? JSON.parse(SERVER['news']) : []
     this.movieTrailer = SERVER['movie_trailer'] ? JSON.parse(SERVER['movie_trailer']) : {}
@@ -34,7 +33,7 @@ module.exports = {
     this.movies = SERVER['movies'] ? SERVER['movies'] : []
     this.concerts = SERVER['concerts'] ? SERVER['concerts'] : []
     this.slider = SERVER['slider'] ? JSON.parse(SERVER['slider']) : {slides:[]}
-
+*/
 
     
   },

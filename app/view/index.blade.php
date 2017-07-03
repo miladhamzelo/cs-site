@@ -1,12 +1,21 @@
+@extends('layouts.master')
+
+
+@section('main')
+
 <div id="app">
     
 <div class="slider">
         
         <div id="jssor_1" style="position:relative;margin:0 auto;top:0px;left:0px;width:1500px;height:600px;overflow:hidden;visibility:hidden;">
             <!-- Loading Screen -->
-            <div data-u="loading" class="jssorl-oval" style="position:absolute;top:0px;left:0px;text-align:center;background-color:rgba(0,0,0,0.7);"> <img style="margin-top:-19.0px;position:relative;top:50%;width:38px;height:38px;" src="<?= assets ?>img/oval.gif" /> </div>
+            <div data-u="loading" class="jssorl-oval" style="position:absolute;top:0px;left:0px;text-align:center;background-color:rgba(0,0,0,0.7);"> <img style="margin-top:-19.0px;position:relative;top:50%;width:38px;height:38px;" src="{{  assets  }}img/oval.gif" /> </div>
             <div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:1500px;height:600px;overflow:hidden;">
-                <div v-for="slide in slider.slides"> <a :href="'http://'+slide.link"><img data-u="image" :src="'<?=upload?>/' + slide.image" /> </a></div>
+                @forelse($slides as $slide)
+                <div> <a href="http://{{ $slide['link'] }}"><img data-u="image" src="{{ upload }}/{{ $slide['image'] }}" /> </a></div>
+                @empty
+                <h1>123</h1>
+                @endforelse
                  <a data-u="any" href="http://www.jssor.com" style="display:none">Full Width Slider</a> </div>
             <!-- Bullet Navigator -->
             <div data-u="navigator" class="jssorb05" style="bottom:16px;right:16px;" data-autocenter="1">
@@ -24,19 +33,19 @@
 
                     <li>
 
-                        <a href="<?= $telegram ?>" target="_blank"><img src="<?= assets ?>img/telegram.png"></a>
+                        <a href="{{  $telegram  }}" target="_blank"><img src="{{ assets }}img/telegram.png"></a>
 
                     </li>
 
                     <li>
 
-                        <a href="<?= $instagram ?>" target="_blank"><img src="<?= assets ?>img/instagram.png"></a>
+                        <a href="{{  $instagram  }}" target="_blank"><img src="{{assets}}img/instagram.png"></a>
 
                     </li>
 
                     <li>
 
-                        <a href="<?= $bazar ?>" target="_blank"><img src="<?= assets ?>img/android.png"></a>
+                        <a href="{{  $bazar  }}" target="_blank"><img src="{{assets}}img/android.png"></a>
 
                     </li>
 
@@ -46,8 +55,8 @@
 </div>
 <div class="col-md-6">
             <ul style="margin: 15px 0;">
-                <li><i class="fa fa-envelope" aria-hidden="true"></i> {{setting.contact.siteEmail}} </li>
-                <li><i class="fa fa-phone-square" aria-hidden="true"></i>{{setting.contact.phone}} </li>
+                <li><i class="fa fa-envelope" aria-hidden="true"></i> {{ $siteEmail }} </li>
+                <li><i class="fa fa-phone-square" aria-hidden="true"></i>{{ $phone }}</li>
                 <div class="clearfix"></div>
             </ul>
 </div>
@@ -61,18 +70,19 @@
             <div class="clip">
 
                 <div class="video">
-                    <div :id="movieTrailer.id">
-                        <script type="text/JavaScript"  :src="movieTrailer.src" ></script></div>
+                    <div id="{{ $movieTrailer['id'] }}">
+                        <script type="text/JavaScript"  :src="'{{ $movieTrailer['src'] }}'" ></script>
                     </div>
-                <h3>{{movieTrailer.name}}</h3> 
+                </div>
+                <h3>{{ $movieTrailer["name"] }}</h3> 
             </div>
         </div>
         <div class="col-md-4 cold-sm-12">
             <div class="comingsoon">
                 <div class="head">
                     <h2>به زودی در سینما ستاره</h2> </div>
-                <div class="cover"> <img :src="'<?=upload?>/' + nextMovie.image">
-                    <h5>{{nextMovie.name}}</h5> </div>
+                <div class="cover"> <img src="{{ upload }}/{{ $nextMovie['image'] }}">
+                    <h5>{{ $nextMovie["name"] }}</h5> </div>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -90,11 +100,12 @@
                 <div class="clearfix"></div>
             </div>
 
-            <div class="col-md-6" v-for="m in movies">
+            @foreach($movies as $m)
+            <div class="col-md-6">
                 <div class="movie">
-                    <a :href="'ticket?id='+m.id"> <img :src="'<?=upload?>' + m.bg_image">
+                    <a href="ticket?id={{ $m['id'] }}"> <img src="{{ upload }}{{ $m['bg_image'] }}">
                         <div class="overly"> </div>
-                        <h2>{{m.title}}</h2>
+                        <h2>{{ $m["title"] }}</h2>
                         <div class="row">
                         <div class="button"> خرید بلیط</div>
                         </div>
@@ -102,11 +113,13 @@
                     </a>
                 </div>
             </div>
+            @endforeach
             
             <div class="clearfix"></div>
         </div>
 
-        <div class="ticketrow" v-if="concerts.length">
+        @if(!empty($concerts))
+        <div class="ticketrow">
             <div class="head">
                 <div class="col-md-3 col-sm-4 col-xs-6">
                     <div class="img"></div>
@@ -117,12 +130,12 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-
-            <div class="col-md-6" v-for="c in concerts">
+            @foreach($concerts as $c)
+            <div class="col-md-6">
                 <div class="movie">
-                    <a :href="'ticket?cid='+c.id"> <img :src="'<?=upload?>' + c.bg_image">
+                    <a href="ticket?cid={{ $c['id'] }}"> <img src="{{ upload }}{{ $c['bg_image'] }}">
                         <div class="overly"> </div>
-                        <h2>{{c.title}}</h2>
+                        <h2>{{ $c['title'] }}</h2>
 						<div class="row">
                         <div class="button"> خرید بلیط</div>
 						</div>
@@ -130,9 +143,11 @@
                     </a>
                 </div>
             </div>
+            @endforeach
             
             <div class="clearfix"></div>
         </div>
+        @endif
     </div>
     <div class="rowsubcribe">
         <div class="container">
@@ -157,22 +172,33 @@
         <div class="container">
             <div class="col-md-8">
                 <div class="newsbox">
-                    <div class="head"> <img src="<?=assets?>img/news.png">
+                    <div class="head"> <img src="{{ assets }}img/news.png">
                         <h4>اخبار</h4> </div>
                     <div class="clearfix"></div>
-                    <div class="col-md-6" v-for="n in news">
+                    @foreach($news as $n)
+                    <div class="col-md-6">
                         <div class="news">
-                            <a :href="'news?id=' + n.id"><div class="image"><img :src="'<?=upload?>/'+n.image"></a>
-                                <div class="date">{{n.date}}</div>
-                            </div> <a :href="'news?id=' + n.id"><h2>{{n.title}}</h2></a> </div>
+                            <a href="news?id={{ $n['id'] }}"><div class="image"><img src="{{ upload }}/{{ $n['image'] }}"></a>
+                                <div class="date">{{ $n.date }}</div>
+                        </div>
+                        <a href="news?id={{ $n['id'] }}"><h2>{{ $n['title'] }}</h2></a> 
                     </div>
+                    </div>
+                    @endforeach
                     <div class="clearfix"></div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="promotion">
                     <div class=" head ">
-                        <h2>پیشنهاد استثنایی</h2> </div> <a v-for="p in promotions" :href="'http://' + p.link"><img  :src="'<?=upload?>/' + p.image"> </a></div>
+                        <h2>پیشنهاد استثنایی</h2> 
+                    </div> 
+                    @foreach($promotions as $p)
+                    <a href="http://{{ $p['link'] }}">
+                        <img src="{{ upload }}/{{ $p['image'] }}"> 
+                    </a>
+                    @endforeach
+                </div>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -187,10 +213,8 @@
 </div>
 
 
-<?php GET_SERVER_VALUES() ?>
-<?php GET_APP_JS() ?>
-
-<!--<script src="<?=base?>/dist/main.build.js?tesdsfsdfsdfdt"></script>-->
+{{  GET_SERVER_VALUES()   }}
+{{  GET_APP_JS()          }}
 
 <script type="text/javascript">
 
@@ -250,3 +274,7 @@
     height: 128px !important;
 }
 </style>
+
+
+
+@endsection

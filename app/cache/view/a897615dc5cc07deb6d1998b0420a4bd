@@ -1,7 +1,18 @@
+<?php $__env->startSection("main"); ?>
+
+
 <div id="app">
     <div class="headerb">
         <div class="container">
+            <?php if($ticketType == 'film'): ?>
+            <h1 v-text="movie.title.toFaDigit()"></h1>
+            <?php else: ?>
             <h1 v-text="concert.title.toFaDigit()"></h1>
+            <?php endif; ?>
+
+            <?php if($ticketType == 'film'): ?>
+            <div class="cat"><?php echo e($type); ?></div>
+            <?php endif; ?>
             <div class="clearfix"></div>
         </div>
     </div>
@@ -21,10 +32,24 @@
                             <div class="col-sm-6">
                                  عنوان فیلم :
                             </div>
+                            
+                            <?php if($ticketType == 'concert'): ?>
                             <div class="col-sm-6">
                                 {{concert.title.toFaDigit()}}
                             </div>
-          
+                            <?php else: ?>
+                            <div class="col-sm-6">
+                                {{movie.title.toFaDigit()}}
+
+                            </div>
+                            <div class="col-sm-6">
+                                 مدت زمان پخش :
+                            </div>
+                            <div class="col-sm-6">
+                                {{movie.time_out.toFaDigit()}} دقیقه
+                            </div>
+                            <?php endif; ?>
+
                             <div class="col-sm-6">
                                  تاریخ و زمان پخش :
                             </div>
@@ -65,7 +90,11 @@
                                 قیمت صندلی ها :
                             </div>
                             <div class="col-sm-6">
+                                <?php if($ticketType == 'film'): ?>
+                                {{ get_movie_price }} تومان
+                                <?php else: ?>
                                 {{ get_concert_prices }} تومان
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="row padding">
@@ -109,11 +138,19 @@
     <div id="form" class="container" v-show="!showFactor"> 
         <div class="buy">
             <div class="col-md-4">
-                <div class="cover"><img src="<?= base ?>upload/<?= $data['image'] ?>"></div>
+                <div class="cover"><img src="<?php echo e(upload); ?><?php echo e($image); ?>"></div>
                 <div class="cast">
                     <ul>
-                        <li>درباره برنامه : <?= $data['des'] ?></li>
-                        
+                        <?php if($ticketType == 'film'): ?>
+                        <li>درباره فیلم : <?php echo e($des); ?></li>
+                        <li>کارگردان : <?php echo e($director); ?></li>
+                        <li>تهیه کننده : <?php echo e($producer); ?></li>
+                        <li>سال ساخت : <?php echo e($year); ?></li>
+                        <li>بازیگران : <?php echo e($actors); ?></li>
+                        <li>سایر عوامل : <?php echo e($other_agents); ?></li>
+                        <?php else: ?>
+                         <li>درباره برنامه : <?php echo e($des); ?></li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
@@ -211,8 +248,8 @@
                 </section>
 
 
-
-             <!--   <div style="padding:20px 0"><p >صحنه هایی از فیلم</p>
+                <?php if($ticketType == 'film'): ?>
+                <div style="padding:20px 0"><p >صحنه هایی از فیلم</p>
                    
                         <div class=" row gallery">
                             <div class="images">
@@ -235,7 +272,8 @@
                             </div>
                         </div>
                     
-                </div>-->
+                </div>
+                <?php endif; ?>
 
 
             </div>
@@ -386,8 +424,11 @@ body{
 
 
 
-<?php GET_SERVER_VALUES() ?>
-<?php GET_APP_JS() ?>
+<?php echo e(GET_SERVER_VALUES()); ?>
+
+<?php echo e(GET_APP_JS()); ?>
+
+
 
 
 
@@ -404,3 +445,7 @@ body{
         });
 //    });
 </script>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make("layouts.master", array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -5,12 +5,16 @@ global $db;
 $res = [];
 $res["is_add_factor"]  = "1";
 
+//print_r($_POST);
+
 $movieType = 'film';
 $ReserveTable = 'Reserve';
-if(!empty($_POST['is_concert']) && ($_POST['is_concert'] == "true" || $_POST['is_concert'] == true)){
+if(!empty($_POST['is_concert']) && ($_POST['is_concert'] === "true" || $_POST['is_concert'] === true)){
 	$movieType = 'concert';
 	$ReserveTable = 'concertReserve';
 }
+
+//die("<br>".$ReserveTable);
 
 $_POST['chairs'] = json_decode($_POST['chairs'], true);
 
@@ -38,7 +42,7 @@ if(!empty($chairs_sold) && is_array($chairs_sold))
 	foreach ($chairs_sold as $chair) {
 		foreach ($_POST['chairs'] as $c) {
 			if($chair['id'] == $c['id'])
-				$res['is_add_factor'] = '0';	
+				$res['is_add_factor'] = '-1';	
 		}
 	}
 
@@ -126,7 +130,7 @@ if($res['is_add_factor'] == "1"){
 
 
 
-if($res['status'] == "1"){
+if($res['is_add_factor'] == "1"){
 
 	foreach ($_POST['chairs'] as $i => $c) {
 
@@ -137,10 +141,10 @@ if($res['status'] == "1"){
 		"chairs_sold" => json_encode($chairs_sold),		
 	);
 
-	if(!$db->update($ReserveTable , $fields, "uniqe_id='${urid}'")){
+	$db->update($ReserveTable , $fields, "uniqe_id='${urid}'");
 
-		$res["is_add_factor"]  = "0";
-	}
+		//$res["is_add_factor"]  = "0";
+	
 
 }
 

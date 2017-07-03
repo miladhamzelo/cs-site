@@ -11,9 +11,6 @@ module.exports = {
       ticketData : {},
       ticket : {},
 
-      status : SERVER['status'],
-      mid : SERVER['mid'],
-
     }
   },
   created() {

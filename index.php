@@ -4,23 +4,22 @@ session_start();
 define("PATH_ROOT", dirname(__FILE__));
 define("SERVER_NAME", $_SERVER['SERVER_NAME']);
 
-require("source/functions.php");
-require("controller.php");
-
-//define("nobody",(isset($_GET["nobody"])? true : false));
-//define("preload",(isset($_GET["nopreload"])? false : true));
 
 
 $env_content = file_get_contents(".env");
-$env = [];
 $env_content = explode("\n", $env_content);
 foreach ($env_content as $e) {
+	
 	$option = explode("=", trim($e));
 	if(!empty($option[0]))
-		$env[$option[0]] = $option[1];
+		$_ENV[$option[0]] = $option[1];
 }
 
-$_SESSION["env"] = $env;
+
+require("source/functions.php");
+require("controller.php");
+
+
 
 $dirname = dirname($_SERVER["SCRIPT_NAME"]);
 
@@ -66,8 +65,8 @@ if(SERVER_NAME == 'localhost'){
 
 define("SERVER_PATH",$base);
 define("base",$base."app/");
-define("assets",base."/assets/");
-define("upload",base."/upload/");
+define("assets",base."view/assets/");
+define("upload",base."upload/");
 
 SERVER("assets", assets);
 SERVER("base", base);

@@ -148,9 +148,49 @@ function _default(){
 }
 
 
+function index(){
 
-function siteUpdating(){
-	include "app/siteUpdating.php";
+	SERVER("ctrl", "index");
+
+		global $db;
+
+
+
+
+	$data = $db->select("movies","archive=0");
+	$params["movies"] = check_movies($data, false, 60);
+
+	$data = $db->select("concerts","archive=0");
+	$params["concerts"] =  check_concerts($data, false, 60);
+
+	$data = array_pop($db->select("Data","name='setting'"));
+	$data =  json_decode($data['data'], true);
+	$params["phone"] = $data["contact"]["phone"];
+	$params["siteEmail"] = $data["contact"]["siteEmail"];
+
+	$data = array_pop($db->select("Data","name='slider'"));
+	$data =  json_decode($data['data'], true);
+	$params["slides"] = $data["slides"];
+
+
+	$data = array_pop($db->select("Data","name='promotions'"));
+	$params["promotions"] =  json_decode($data['data'], true);
+
+	$data = array_pop($db->select("Data","name='next_movie'"));
+	$params["nextMovie"] =  json_decode($data['data'], true);
+
+	$data = array_pop($db->select("Data","name='movie_trailer'"));
+	$params["movieTrailer"] =  json_decode($data['data'], true);
+
+	$data = $db->run("SELECT id,date,title,image FROM news ORDER BY id desc LIMIT 2");
+	$params["news"] = $data;
+
+	view("index", $params);
+}
+
+
+function updating(){
+	view("updating");
 }
 
 
@@ -323,19 +363,18 @@ function finishPay(){
 
 	mylog($uid, "finishPay status is $status");
 
-	SERVER('status', $status);
+	//SERVER('status', $status);
 	SERVER('fid', $fid);
-	SERVER('mid', $f['movie_id']);
+	//SERVER('mid', $f['movie_id']);
 
 
 	$mid = $f['movie_id'];
 
-	include 'app/layout/header.php';
-	if(!empty($f))
-		include 'app/finishPay.php';
-	else
-		include 'app/404.php';
-	include 'app/layout/footer.php';
+	
+	if(empty($f))
+		redirect("not_found");
+
+	view("finishPay", compact(["status", "isConcert", "mid"]));
 	
 }
 
@@ -354,6 +393,8 @@ function showLogs(){
 
 }
 
+
+/*
 
 function index($p){
 
@@ -395,14 +436,14 @@ function index($p){
 	include 'app/layout/footer.php';
 }
 
+*/
+
 
 function not_found(){
 
 	global $db;
 
-	include 'app/layout/header.php';
-	include 'app/404.php';
-	include 'app/layout/footer.php';
+	view("404");
 }
 
 
@@ -425,15 +466,15 @@ function ticket($p){
 
 	$film_id = empty($_GET['id']) ? null : $_GET['id'];
 	$concert_id = empty($_GET['cid']) ? null : $_GET['cid'];
-	$ticket = "";
-	
+
+
 	if($film_id){
 
 		$data = $db->select("movies","id=${film_id} AND archive=0");
 		$data = check_movies($data, false, 60)[0];
 		SERVER("movie",$data);
 		SERVER("ctrl","ticket");
-		$ticket = "ticket";
+		$ticketType = "film";
 
 
 	}else{
@@ -442,7 +483,7 @@ function ticket($p){
 		$data = check_concerts($data, false, 60)[0];
 		SERVER("concert",$data);
 		SERVER("ctrl","ticket_concert");
-		$ticket = "ticket_concert";
+		$ticketType = "concert";
 
 	}
 
@@ -451,9 +492,8 @@ function ticket($p){
 
 
 
-	include 'app/layout/header.php';
-	include "app/${ticket}.php";
-	include 'app/layout/footer.php';
+	view("ticket",compact("ticketType")+$data);
+	
 
 
 }
@@ -468,13 +508,9 @@ function about(){
 	$content = json_decode($data["data"], true);
 	if(!empty($content["about"])){
 		$data["des"] = $content["about"];
-		$data["title"] = "درباره ما";
-		$data["date"] = "";
 	}
 
-	include 'app/layout/header.php';
-	include 'app/page.php';
-	include 'app/layout/footer.php';
+	view("about", $data);
 }
 
 
@@ -539,9 +575,7 @@ function contactUs(){
 		}
 	}
 
-	include 'app/layout/header.php';
-	include 'app/contactus.php';
-	include 'app/layout/footer.php';
+	view("contactus" , compact([ "errName", "errHuman", "errMessage", "errEmail", "address", "phone" ]));
 }
 
 
@@ -563,7 +597,8 @@ function admin_panel(){
 		SERVER("user_id", $id);
 		SERVER("access", $admin["access"]);
 
-		include 'app/admin.php';
+		
+		view("admin");
 
 	}else{
 
@@ -582,7 +617,7 @@ function self_service(){
 	if(!empty($_COOKIE['cinema-setareh-admin-id'])){
 
 		SERVER("entity", "film");
-		include 'app/self_service.php';
+		view("self_service");
 
 
 	}else{
@@ -603,7 +638,7 @@ function self_service_concert(){
 
 		SERVER("entity", "concert");
 		SERVER("ctrl", "self_service");
-		include 'app/self_service.php';
+		view("self_service");
 
 
 	}else{
@@ -620,16 +655,14 @@ function page($p){
 	global $validator;
 
 	if(!$validator->validate($_GET, ["id" => "required|numeric"]))
-		die("erro");
+		redirect("not_found");
 
 	$pageId = $_GET["id"];
 	$data = array_pop($db->select("pages","id=${pageId}"));
 
 	if(empty($data)) redirect("not-found");
 
-	include 'app/layout/header.php';
-	include 'app/page.php';
-	include 'app/layout/footer.php';
+	view("page", $data);
 
 
 }
@@ -661,9 +694,9 @@ function login($p){
 
 	global $db;
 
-	$back = !empty($_GET['back']) ? $_GET['back'] : "admin";
-	$action = $back != "admin" ? (root=="/"?"":root)."/login?back=${back}" : (root=="/"?"":root)."/login";
-		
+	$back = !empty($_GET['back']) ? $_GET['back'] : "admin-panel";
+	$action = $back != "admin-panel" ? (root=="/"?"":root)."/login?back=${back}" : (root=="/"?"":root)."/login";
+	$login_err = false;
 
 
 	if(!empty($_COOKIE['cinema-setareh-admin-id'])){
@@ -689,13 +722,13 @@ function login($p){
 		}else{
 
 			$login_err = true;
-			include 'app/login.php';
+			view("login", compact(['action', 'login_err']));
 		}
 
 
 	}else{
 
-		include 'app/login.php';
+		view("login", compact(['action', 'login_err']));
 
 	}
 

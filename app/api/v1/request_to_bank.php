@@ -15,7 +15,7 @@ $Amount = $f["total_price"]; //Amount will be based on Toman  - Required
 $Description = 'خرید بلیط فیلم ';  // Required
 // $Email = 'UserEmail@Mail.Com'; // Optional
 //  $Mobile = '09123456789'; // Optional
-$CallbackURL = SERVER_PATH.'verifyPay?isapp=1&fid='.$fid;  // Required
+$CallbackURL = SERVER_PATH.'verifyPay?fid='.$fid;  // Required
 
 // URL also can be ir.zarinpal.com or de.zarinpal.com
 $client = new SoapClient('https://ir.zarinpal.com/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);

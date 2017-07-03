@@ -11,14 +11,14 @@
     <title>سرویس خرید بلیط</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="<?= assets ?>/admin/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?= assets ?>/admin/css/bootstrap-reset.css" rel="stylesheet">
+    <link href="{{  assets  }}/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{  assets  }}/admin/css/bootstrap-reset.css" rel="stylesheet">
     <!--external css-->
-    <link href="<?= assets ?>/admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="{{  assets  }}/admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
-    <link href="<?= assets ?>/admin/css/style.css" rel="stylesheet">
-    <link href="<?= assets ?>/admin/css/style-responsive.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="<?= assets ?>/ticket.css">
+    <link href="{{  assets  }}/admin/css/style.css" rel="stylesheet">
+    <link href="{{  assets  }}/admin/css/style-responsive.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{  assets  }}/ticket.css">
 
 </head>
 
@@ -53,16 +53,16 @@
                 
                 <div class="col-lg-3">
                     <section class="panel panel-primary">
-                        <header class="panel-heading ">مشخصات {{ title_msg }}</header>
+                        <header class="panel-heading ">مشخصات @{{ title_msg }}</header>
                         <div class="panel-body">
                             <div class="col-md-12" v-if="showtime.id">
-                                <div class="col-md-12"><big class="title"><strong>{{movie.title}}</strong></big></div>
+                                <div class="col-md-12"><big class="title"><strong>@{{movie.title}}</strong></big></div>
                                 <div class="col-md-12">
 
                                     <select v-model="date" class="date">
-                                        <option :value="date" v-if="get_dates.length==0">{{date}} - {{getDay(date)}}</option>
+                                        <option :value="date" v-if="get_dates.length==0">@{{date}} - @{{getDay(date)}}</option>
                                         <option disabled v-if="get_dates.length==0">درحال بارگزاری ...</option>
-                                        <option v-for="d in get_dates" :value="d">{{d}} - {{$root.getDay(d)}}</option>
+                                        <option v-for="d in get_dates" :value="d">@{{d}} - @{{$root.getDay(d)}}</option>
                                     </select>
 
                                     <div class="times">
@@ -70,9 +70,9 @@
                                         <div v-for="(t,i) in get_times" >
                                             <input :id="'time'+i"  type="radio" v-model="time" :value="t.id" @click="sansSelect(t)"> 
                                             <label :for="'time'+i" class="time">
-                                               <span style="margin: 0 3px">سانس {{lables[i]}}</span>  {{t.time}} 
+                                               <span style="margin: 0 3px">سانس @{{lables[i]}}</span>  @{{t.time}} 
                                                <span style="margin: 0 3px;font-size: 11px;
-                                               font-style: italic;font-weight: 100;">{{t.movie.title}}</span> 
+                                               font-style: italic;font-weight: 100;">@{{t.movie.title}}</span> 
                                             </label>
                                         </div>
                                        
@@ -140,7 +140,7 @@
              
 
                                 <div class="col-md-4 mtop" v-if="entity=='film'"><big>هزینه هر صندلی : 
-                                    <strong>{{ get_movie_price.toMoney().toFaDigit() }} تومان 
+                                    <strong>@{{ get_movie_price.toMoney().toFaDigit() }} تومان 
                                         <span v-if="showtime.is_half_price=='1'">(نیم بها)</span>
                                     </strong>
                                     </big>
@@ -153,12 +153,12 @@
 
                                 
                                       
-                                 <div class="col-md-4 mtop"><big>تعداد صندلی ها : <strong>{{selectedChairs.length.toFaDigit()}} عدد </strong></big></div>
+                                 <div class="col-md-4 mtop"><big>تعداد صندلی ها : <strong>@{{selectedChairs.length.toFaDigit()}} عدد </strong></big></div>
 
                                 <div class="col-md4 mtop">
                                     <big>هزینه کل : 
-                                        <strong v-if="entity=='film'">{{total_price.toMoney().toFaDigit()}} تومان</strong>
-                                        <strong v-else>{{concert_total_price.toMoney().toFaDigit()}} تومان</strong>
+                                        <strong v-if="entity=='film'">@{{total_price.toMoney().toFaDigit()}} تومان</strong>
+                                        <strong v-else>@{{concert_total_price.toMoney().toFaDigit()}} تومان</strong>
                                     </big>
                                 </div>
 
@@ -189,7 +189,7 @@
 </html>
 
 
-<link rel="stylesheet" type="text/css" href="<?= assets ?>/ticket.css">
+<link rel="stylesheet" type="text/css" href="{{  assets  }}/ticket.css">
 
 
 <style scoped>
@@ -353,7 +353,7 @@
 
 
 
-<script type="text/javascript" src="<?= assets ?>/pdp/js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="{{  assets  }}/pdp/js/jquery-1.10.1.min.js"></script>
 
-<?php GET_SERVER_VALUES() ?>
-<?php GET_APP_JS() ?>
+{{ GET_SERVER_VALUES() }}
+{{ GET_APP_JS() }}

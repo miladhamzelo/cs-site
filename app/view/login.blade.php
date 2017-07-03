@@ -11,13 +11,13 @@
     <title>Login</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="<?= assets ?>/admin/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?= assets ?>/admin/css/bootstrap-reset.css" rel="stylesheet">
+    <link href="{{  assets  }}/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{  assets  }}/admin/css/bootstrap-reset.css" rel="stylesheet">
     <!--external css-->
-    <link href="<?= assets ?>/admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="{{  assets  }}/admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
-    <link href="<?= assets ?>/admin/css/style.css" rel="stylesheet">
-    <link href="<?= assets ?>/admin/css/style-responsive.css" rel="stylesheet" />
+    <link href="{{  assets  }}/admin/css/style.css" rel="stylesheet">
+    <link href="{{  assets  }}/admin/css/style-responsive.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
     <!--[if lt IE 9]>
@@ -30,10 +30,10 @@
 
     <div class="container">
 
-      <form class="form-signin" action="<?= $action ?>" method="post">
+      <form class="form-signin" action="{{  $action  }}" method="post">
         <h2 class="form-signin-heading">وارد شوید</h2>
         <div class="login-wrap">
-            <span class="err"><?= $login_err ? 'نام کاربری یا گزرواژه اشتباه است.' : '' ?></span>
+            <span class="err">{{  $login_err ? 'نام کاربری یا گزرواژه اشتباه است.' : ''  }}</span>
             <input type="text" name="username" class="form-control" placeholder="نام کاربری" autofocus>
             <input type="password" name="password" class="form-control" placeholder="کلمه عبور">
 

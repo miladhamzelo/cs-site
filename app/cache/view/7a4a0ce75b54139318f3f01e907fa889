@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Mosaddek">
     <meta name="keyword" content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-    <link rel="shortcut icon" href="<?= assets ?>/admin/img/favicon.html">
+    <link rel="shortcut icon" href="<?php echo e(assets); ?>/admin/img/favicon.html">
     <title>پنل مدیریت</title>
     <!-- Bootstrap core CSS -->
 
-    <link href="<?= assets ?>/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo e(assets); ?>/admin/css/bootstrap.min.css" rel="stylesheet">
     <!--external css-->
-    <link href="<?= assets ?>/admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link href="<?= assets ?>/admin/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen" />
-    <link rel="stylesheet" href="<?= assets ?>/admin/css/owl.carousel.css" type="text/css">
+    <link href="<?php echo e(assets); ?>/admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="<?php echo e(assets); ?>/admin/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="stylesheet" href="<?php echo e(assets); ?>/admin/css/owl.carousel.css" type="text/css">
     <!-- Custom styles for this template -->
-    <link href="<?= assets ?>/admin/css/style.css" rel="stylesheet">
-    <link href="<?= assets ?>/admin/css/style-responsive.css" rel="stylesheet" />
+    <link href="<?php echo e(assets); ?>/admin/css/style.css" rel="stylesheet">
+    <link href="<?php echo e(assets); ?>/admin/css/style-responsive.css" rel="stylesheet" />
 
 
 </head>
@@ -172,7 +171,7 @@
 
 </html>
 
-<link rel="stylesheet" type="text/css" href="<?= assets ?>/ticket.css">
+<link rel="stylesheet" type="text/css" href="<?php echo e(assets); ?>/ticket.css">
 
 <style>
 
@@ -184,9 +183,9 @@ body{
     display: none;
 }
 
-@media print {
+@media  print {
 
-    @page {
+    @page  {
          margin: 5px;
          padding: 0;
     }
@@ -229,34 +228,7 @@ body{
 ul.child{
    display: none;
 }
-/*
-ul.child a{
-    border-right: 3px solid rgba(255,255,255,0.1);
-}
 
-.child a.router-link-active {
-  border-right: 3px solid #f66;
-  background: rgba(255,255,255,0.1) !important;
-  color: white  !important;
-  border-radius: 2px;
-}
-.child li.router-link-active a {
-  border-right: 3px solid #f66;
-  background: rgba(255,255,255,0.1) !important;
-  color: white  !important;
-  border-radius: 2px;
-}
-a.router-link-active {
-  background: #f66 !important;
-  color: white  !important;
-  border-radius: 2px;
-}
-li.router-link-active a {
-  background: #f66 !important;
-  color: white  !important;
-  border-radius: 2px;
-}
-*/
 
 .router-link-active,
 .my-router-link-active a {
@@ -306,34 +278,36 @@ ul.sidebar-menu li li>a{
 
 <!-- DATEPICKER -->
 
-<link type="text/css" href="<?= assets ?>jquery-datepicker/styles/jquery-ui-1.8.14.css" rel="stylesheet" />
-<script type="text/javascript" src="<?= assets ?>jquery-datepicker/scripts/jquery-1.6.2.min.js"></script>
-<script type="text/javascript" src="<?= assets ?>jquery-datepicker/scripts/jquery.ui.datepicker-cc.all.min.js"></script>
+<link type="text/css" href="<?php echo e(assets); ?>jquery-datepicker/styles/jquery-ui-1.8.14.css" rel="stylesheet" />
+<script type="text/javascript" src="<?php echo e(assets); ?>jquery-datepicker/scripts/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="<?php echo e(assets); ?>jquery-datepicker/scripts/jquery.ui.datepicker-cc.all.min.js"></script>
 <script type="text/javascript">
         var $jQuery1_6 = $.noConflict(true);
 </script>
 
 <!-- DATEPICKER -->
 
-<script src="<?= assets ?>/admin/tinymce/tinymce.min.js"></script>
+<script src="<?php echo e(assets); ?>/admin/tinymce/tinymce.min.js"></script>
 
 
-<?php GET_SERVER_VALUES() ?>
-<?php GET_APP_JS() ?>
+<?php echo e(GET_SERVER_VALUES()); ?>
 
-<script type="text/javascript" src="<?= assets ?>/pdp/js/jquery-1.10.1.min.js"></script>
-<script src="<?= assets ?>/admin/js/bootstrap.min.js"></script>
-<script src="<?= assets ?>/admin/js/jquery.scrollTo.min.js"></script>
-<script src="<?= assets ?>/admin/js/jquery.nicescroll.js" type="text/javascript"></script>
-<script src="<?= assets ?>/admin/js/jquery.sparkline.js" type="text/javascript"></script>
-<script src="<?= assets ?>/admin/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
-<script src="<?= assets ?>/admin/js/owl.carousel.js"></script>
-<script src="<?= assets ?>/admin/js/jquery.customSelect.min.js"></script>
+<?php echo e(GET_APP_JS()); ?>
 
-<script src="<?= assets ?>/admin/js/common-scripts.js"></script>
 
-<script src="<?= assets ?>/admin/js/sparkline-chart.js"></script>
-<script src="<?= assets ?>/admin/js/easy-pie-chart.js"></script>
+<script type="text/javascript" src="<?php echo e(assets); ?>/pdp/js/jquery-1.10.1.min.js"></script>
+<script src="<?php echo e(assets); ?>/admin/js/bootstrap.min.js"></script>
+<script src="<?php echo e(assets); ?>/admin/js/jquery.scrollTo.min.js"></script>
+<script src="<?php echo e(assets); ?>/admin/js/jquery.nicescroll.js" type="text/javascript"></script>
+<script src="<?php echo e(assets); ?>/admin/js/jquery.sparkline.js" type="text/javascript"></script>
+<script src="<?php echo e(assets); ?>/admin/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
+<script src="<?php echo e(assets); ?>/admin/js/owl.carousel.js"></script>
+<script src="<?php echo e(assets); ?>/admin/js/jquery.customSelect.min.js"></script>
+
+<script src="<?php echo e(assets); ?>/admin/js/common-scripts.js"></script>
+
+<script src="<?php echo e(assets); ?>/admin/js/sparkline-chart.js"></script>
+<script src="<?php echo e(assets); ?>/admin/js/easy-pie-chart.js"></script>
 
 
 
