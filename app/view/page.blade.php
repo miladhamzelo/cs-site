@@ -39,7 +39,7 @@
 </style>
 
 
-{{ GET_SERVER_VALUES() }}
-{{ GET_APP_JS() }}
+@getAppVars
+@getAppScript
 
 @endsection

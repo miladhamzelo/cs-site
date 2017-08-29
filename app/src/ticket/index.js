@@ -4,25 +4,40 @@ import sansha from './sansha.vue'
 import imgPro from '../imgPro.vue'
 
 
+import forgetPass from '../forgetPass.vue'
+
+
 module.exports = {
+
 
   components : {
      sansha,
      sandaliha,
-     imgPro
+     imgPro,
+     forgetPass
   },
 
   data(){
     return{
+
+        auth : 'login',
+        login : {username : '', password : '', errors : []} ,
+        register : {name : '', mobile : '' , errors : [], sms : true, rules : true} ,
+        showSmsMessage : false,
+        
       
+        movie : SERVER['movie'] ? SERVER['movie'] : undefined,
+        concert : SERVER['concert'] ? SERVER['concert'] : undefined,
+        discount_code : '',
+        discount_value : 0,
         step : 0,
-        movie : SERVER['movie'],
         user_id : 0,
         selectedSans : {},
-        info : {name:'',mobile:''},
+        userInfo : {name:'', mobile:'', id:0},
         selectedChairs : [],
         purchasedChairs : [],
         showChairs : false,
+        chairsError : false,
         sms : false,
 
         loadingWrapper : false,
@@ -33,6 +48,12 @@ module.exports = {
 
     }
   },
+  created() {
+
+    console.log(this.movie)
+    console.log(this.concert)
+
+  },
   watch : {
     selectedSans : function(){
       this.selectedChairs = []
@@ -42,10 +63,10 @@ module.exports = {
 
     formIsComplete(){
 
-      let info = this.info.name!="" && this.info.mobile!=""
+      let info = this.userInfo.name!="" && this.userInfo.mobile!=""
       let selChairs = this.selectedChairs.length>0
 
-      return (info && selChairs)
+      return true//(info && selChairs)
     },
     get_scenes(){
       let scenes = this.movie.scenes.split(",")
@@ -55,8 +76,44 @@ module.exports = {
       })
       return a
     },
+
+    get_concert_prices(){
+      let prices = [];
+      this.selectedChairs.some(el=>{
+
+        if(prices.indexOf(el.price) == -1)
+          prices.push(el.price)
+      })
+      return prices.join(" / ")
+    },
+
+    concert_total_price(){
+      let sum = 0;
+      this.selectedChairs.some(el=>{
+        let row = el.id.split('-')[1];
+        let prices = this.concert.prices_list.split(" ")
+        sum += parseInt(prices[row])
+      })
+      return sum
+    },
+
+    discount_price(){
+      if(this.movie)
+        return (this.discount_value/100)*this.total_price;
+      else
+        return (this.discount_value/100)*this.concert_total_price;
+    },
+
     total_price(){
+
       return this.get_movie_price*this.selectedChairs.length
+    },
+
+    total_price_with_discount(){
+      if(this.movie)
+        return this.total_price - this.discount_price
+      else
+        return this.concert_total_price - this.discount_price
     },
 
     get_movie_price(){
@@ -116,85 +173,175 @@ module.exports = {
   },
   methods : {
 
-    verify_user_info(){
 
-      if(this.info.name.trim().length == 0 ){
-        alert("لطفا نام خود را وارد کنید")
-        return false
-      }
+    reSendPassword(e){
 
-      if( this.info.mobile.trim().length == 0 
-        || !(!isNaN(parseInt(this.info.mobile)) 
-          && this.info.mobile.length == 11)){
-        alert("شماره تلفن همراه خود را درست وارد کنید")
-        return false
-      }
-      return true
+      var el = $(e.target)
+      el.prop("disabled", true);
+
+      var c = 0;
+      var timeout = 180
+      var text = el.text()
+      el.text(text + " ("+timeout+")")
+      var timer = setInterval(()=>{
+        c++;
+        if(c == timeout){
+          el.prop("disabled", false)
+          el.text(text)
+          clearInterval(timer)
+        }else{
+          el.text(text + " (" + (timeout-c) + ")")
+        }
+      },1000)
+
+      this.$http.get('api/re_send_user_password').then(res => {
+
+          alert("رمز عبور به شماره شما ارسالشد.")
+          console.log(res)
+      })
+
+    },
+
+    registerUser(e){
+        var el = $(e.target)
+        el.prop("disabled", true)
+        
+
+        this.register.mobile = enInt(this.register.mobile)
+        this.$http.post('api/new_user',this.register).then(res => {
+          console.log( res)
+          el.prop("disabled", false)
+
+          if(res.body.status == "1"){
+
+           //  alert(res.body.user_info.pass)
+            this.showSmsMessage = true
+          // this.register.pass = res.body.user_info.pass
+            
+            this.login.password = ''
+            this.login.errors = []
+            this.login.username = this.register.mobile
+          
+            this.auth = 'login'
+            
+
+            this.$nextTick(function () {
+              this.$refs.loginPass.focus();
+            });
+
+
+            this.register.name = ''
+            this.register.mobile = ''
+            this.register.sms = true
+            this.register.rules = true
+            this.register.errors = []
+
+          }else{
+            this.register.errors = []
+            console.log("register status: " + res.body.status)
+            if(res.body.status == "-1")
+              this.register.errors.push("این شماره تماس قبلا ثبت شده است")
+            if(res.body.status == "0")
+              this.register.errors.push("شماره تماس وارد شده صحیح نیست")
+          }
+
+
+        })
+    },
+
+    check_discount_code(){
+      this.$http.get("api/check_discount_code",{params:{code:this.discount_code}}).then(res=>{
+        let status = res.body.status
+        console.log(res)
+        if(status == "1"){
+          alert("کد تخفیف معتبر است")
+        }else{
+          alert("کد تخفیف نا معتبر است")
+        }
+      })
     },
     
-    toggleFactor : function(){
+    toggleFactor(back=false){
 
-      if(this.verify_user_info()){
+      this.login.errors = []
+      this.register.errors = []
+      this.chairsError = false;
 
-            this.loadingWrapper = true
-            
-            var self = this;
-            //this.user_id = this.$cookie.get("cinema-setareh-user-id")
-            if(this.user_id == 0){
 
-             // this.info.mobile = 
+      var self = this;
 
-              this.$http.post('api/new_user',this.info).then(res => {
-                console.log(res)
-                if(res.body.status == "1"){
-                  console.log(res)
-                  this.user_id = res.body.user_id
-                  this.showFactor = !this.showFactor 
+       if(!back){
 
-                  if(this.info.remember == true)
-                    this.$cookie.set("cinema-setareh-user-id", this.user_id, { expires: '1M' })
-                  else
-                    this.$cookie.delete("cinema-setareh-user-id")
+        if(this.selectedChairs.length == 0){
+          $('html,body').animate({scrollTop:$("#chiarsSection").offset().top-300 }, 1200);
+          this.chairsError = true;
+          return
+        }
 
-                  $('html,body').animate({scrollTop:$("#app").offset().top }, 1200, function(){
-                    self.loadingWrapper = false
-                  });
+        
+        this.loadingWrapper = true
+        
+        setTimeout(()=>{
 
-                }
-                else{
-                  console.log(res.body.status)
-                }
+          this.$http.post('api/check_user_login',this.login).then(res => {
+            console.log(res)
+            if(res.body.status == "1"){
+              this.userInfo = res.body.user_info
+              
+              this.$http.get('api/check_discount_code',{params:{code:this.discount_code}}).then(res => {
+console.log("discount")
+console.log(res)
+                if(res.body.value != undefined)
+                  this.discount_value = res.body.value
+
+               // alert(this.discount_value)
+
+                self.showFactor = !self.showFactor 
+                $('html,body').animate({scrollTop:$("#app").offset().top }, 1200, function(){
+                  self.loadingWrapper = false
+                  self.showSmsMessage = false
+                });
 
               })
-
+              
             }else{
-              this.showFactor = !this.showFactor 
-              $('html,body').animate({scrollTop:$("#app").offset().top }, 1200, function(){
-                self.loadingWrapper = false
-              });
+              console.log("login status: " + res.body.status)
+              this.login.errors.push('نام کاربری یا گذرواژه اشتباه است')
+              this.loadingWrapper = false
             }
-      
-      }else{
-        $('html,body').animate({scrollTop:$("#app").offset().top }, 1200, ()=>{
-                this.loadingWrapper = false
-              });
+          })
+
+        },1000)
+        
+
+      }else {
+        this.loadingWrapper = true
+
+        self.showFactor = !self.showFactor 
+        $('html,body').animate({scrollTop:$("#app").offset().top }, 1200, function(){
+          self.loadingWrapper = false
+        });
       }
 
+       
 
       
     },
 
-    sendFactor : function(){
+    sendFactor(){
 
-      
+      let  mid = this.movie ? this.movie.id : this.concert.id,
+          total_price = this.movie ? this.total_price : this.concert_total_price,
+          isConcert = this.movie ? false : true
 
       let data = {
-        mid: this.movie.id, 
+        mid,
+        isConcert,
+        total_price,
         urid: this.selectedSans.uniqe_id, 
-        uid: this.user_id, 
+        uid: this.userInfo.id, 
         chairs: this.selectedChairs,
-        total_price: this.total_price,
-        discount: "20%"
+        discount: this.discount_code
       }
 
       console.log(data)
@@ -214,41 +361,8 @@ module.exports = {
       });
     },
 
-    changeInfo : function(){
-
-      this.user_id = 0
-     
-    }
     
 
 
   },
-  created() {
-    console.log(this.movie)
-
-    this.user_id = this.$cookie.get("cinema-setareh-user-id")
-    if(this.user_id != "null"){
-
-      this.$http.get('api/get_users?id='+this.user_id).then(res => {
-
-        console.log(res.body)
-
-        if(res.body != "null"){
-
-          this.info.name = res.body.fullName
-          this.info.mobile = res.body.phone
-          this.info.remember = true
-          
-        }else{
-
-          this.user_id = 0
-          this.$cookie.delete("cinema-setareh-user-id")
-
-        }
-
-      })
-    }
-
-
-  }
 }

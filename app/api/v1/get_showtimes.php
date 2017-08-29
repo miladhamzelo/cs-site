@@ -49,11 +49,14 @@ if($type == 'film'){
 
 		$reserve = $db->run("SELECT uniqe_id,c_id,time,date FROM concertReserve WHERE c_id=${id}");
 
+		$dates = [];
 		foreach ($reserve as $i => $r) {
 			$reserve[$i]['prices_list'] = $concert['prices_list'];
+
+			$dates[$r['date']][] = $reserve[$i]; 
 		}
 
-		$res = $reserve;
+		$res = $dates;
 
 	}else{
 		$res = 0;

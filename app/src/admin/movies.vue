@@ -35,7 +35,7 @@
 </template>
 
 <script>
-	
+import { mapMutations } from 'vuex'	
 
 export default {
 
@@ -58,6 +58,9 @@ export default {
     },
 
     created() {
+
+        console.log("store")
+        console.log(this.$store.state.count)
 
        this.load_movies();
 	},

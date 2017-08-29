@@ -29,13 +29,7 @@
                                     <tinymce v-model="news.des"></tinymce>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">نمایش</label>
-                                <div class="col-sm-10">
-                                    <input type="checkbox" v-model="news.public">
-                                    نمایش این خبر به همه
-                                </div>
-                            </div>
+                            
                         </form>
                     </div>
                 </section>
@@ -59,7 +53,7 @@
         </div>
 
        
-        <button type="button" class="btn btn-primary" @click="sendForm(news,formUrl,progress)">ذخیره</button>
+        <button type="button" class="btn btn-primary"  @click="save">ذخیره</button>
     </div>
 
 </div>
@@ -97,7 +91,7 @@ export default {
                 public : '1'
             },
 
-            formUrl : 'api/new_news'
+            
     
         }
     },
@@ -109,11 +103,19 @@ export default {
     },
     methods : {
 
-        progress(p){
+        save(e){
 
-            if(p.finish){
-                alert("save")
-            }
+            let el = $(e.target)
+            el.prop("disabled","1")
+            setTimeout(()=>{
+
+            this.sendForm(this.news,'api/new_news',(p)=>{
+                if(p.finish){
+                    this.$router.replace("list-news");
+                }
+            })
+            
+            },1000)
         },
 
         get_news_by_id_query : function(){

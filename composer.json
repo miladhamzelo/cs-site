@@ -4,8 +4,8 @@
     "type": "project",
     "require": {
         "wixel/gump": "dev-master",
-        "xiaoler/blade": "^0.3.1"
-        
+        "xiaoler/blade": "5.4.3",
+        "kavenegar/php": "^1.2"
     },
     "authors": [
         {

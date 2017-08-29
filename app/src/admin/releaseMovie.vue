@@ -157,9 +157,7 @@
         </div>
     </div>
     <button type="button" class="btn btn-success" :disabled="is_save"
-    @click="sendForm(movie,formUrl,progress)">ذخیره 
-        <i v-if="is_save" class="loading-style">{{ loadingProgress }}</i>
-    </button>
+    @click="save">ذخیره </button>
 </div>
 
 </template>
@@ -200,7 +198,7 @@ export default {
                 price : '50000',
                 time_out : ''
             },
-            formUrl : 'api/new_movie',
+           
             showTimes : this.$root.showTimes
 
     
@@ -208,6 +206,21 @@ export default {
     },
 
 	methods : {
+
+        save(e){
+
+            let el = $(e.target)
+            el.prop("disabled","1")
+            setTimeout(()=>{
+
+                this.sendForm(this.movie,'api/new_movie',(p)=>{
+                    if(p.finish){
+                        this.$router.replace("list-movies");
+                    }
+                })  
+            
+            },1000)
+        },
 
         new_date(){
 

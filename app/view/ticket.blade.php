@@ -1,5 +1,11 @@
 @extends("layouts.master")
 
+<style type="text/css">
+body{
+visibility: hidden;
+}
+
+</style>
 
 @section("main")
 
@@ -68,13 +74,13 @@
                                  نام / نام خانوادگی :
                             </div>
                             <div class="col-sm-6">
-                                @{{info.name}}
+                                @{{userInfo.name}}
                             </div>
                             <div class="col-sm-6">
                                  شماره تلفن همراه :
                             </div>
                             <div class="col-sm-6">
-                                @{{info.mobile}}
+                                @{{userInfo.mobile}}
                             </div>
 
                         </div>
@@ -113,7 +119,7 @@
                                 تخفیف :
                             </div>
                             <div class="col-sm-6">
-                                0
+                                @{{ discount_price }} تومان
                             </div>
                         </div>
                         <div style="margin-top: 50px;border-top: 1px solid gray;font-size: 20px;padding:10px 0">
@@ -121,14 +127,14 @@
                                 جمع کل :
                             </div>
                             <div class="col-sm-6 ">
-                                @{{ total_price }} تومان
+                                @{{ total_price_with_discount }} تومان
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-12 ">
                     <button class="btn btn-success pull-left" @click="sendFactor" >پرداخت</button>
-                    <button class="btn btn-danger " @click="toggleFactor">بازگشت</button>
+                    <button class="btn btn-danger " @click="toggleFactor(true)">بازگشت</button>
                 </div>
             </div>
         </div>
@@ -174,48 +180,20 @@
                             </div>
                         </section>
                     </div>
-                    <div class="info" v-show="step==1">
-
-                        <section class="panel">
-                            <header class="panel-heading">اطلاعات خریدار</header>
-                            <div class="panel-body">
-                                <form class="form-horizontal tasi-form" method="get">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">نام</label>
-                                        <div class="col-sm-9">
-                                            <input v-if="!user_id" type="text" v-model="info.name" class="form-control" placeholder="نام و نام خانودگی"> 
-                                            <span v-else class="">@{{info.name}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">شماره تماس</label>
-                                        <div class="col-sm-9">
-                                            <input v-if="!user_id" type="text" v-model="info.mobile" class="form-control" placeholder="شماره موبایل"> 
-                                            <span v-else class="">@{{info.mobile}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-9 ">
-                                            <label v-if="!user_id" class="control-label"> 
-                                                <input type="checkbox" v-model="info.remember" >
-                                                این اطلاعات را به یاد داشته باش
-                                            </label>
-                                            <button v-else class="btn btn-default" @click="changeInfo">تغییر اطلاعات</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </section>
-
-                    </div>
+                   
 
                     <sandaliha :show="showChairs"></sandaliha>
 
-                    <div class="chairs" v-show="step==1"> 
+                    <div id="chiarsSection" class="chairs" v-show="step==1"> 
 
                         <section class="panel">
                             <header class="panel-heading">انتخاب صندلی</header>
                             <div class="panel-body">
+
+                                <div class="alert alert-danger" v-show="chairsError">
+                                    باید حداقل یک صندلی انتخاب شود
+                                </div>
+
                                 <button class="btn btn-info" @click="showChairs=true">
                                     صندلی ها
                                 </button>
@@ -231,23 +209,35 @@
                        
                     </div>
 
+                    <div class="discount" v-show="step==1">
 
-                    <div class="newsletter" v-show="step==1"> 
                         <section class="panel">
-                            <header class="panel-heading">گزینه های اختیاری </header>
+                            <header class="panel-heading">کد تخفیف</header>
                             <div class="panel-body">
-                                <label>
-                                    <input type="checkbox" v-model="sms">
-                                    عضویت در خبرنامه پیامکی سایت
-                                </label>
+                                <input type="text" v-model="discount_code" class="form-control" placeholder="کد تخفیف خود را درصورت وجود وارد کنید"><br>
+                                <button class="btn btn-primary" :disabled="!discount_code.length" @click="check_discount_code">بررسی کن</button>
                             </div>
                         </section>
+
+                    </div>
+
+                    <div class="info" v-show="step==1">
+
+                        <section class="panel">
+                            <header class="panel-heading">اطلاعات کاربری</header>
+                            <div class="panel-body">
+                                
+                                
+
+                                @include("components.auth")
+                                
+                            </div>
+                        </section>
+
                     </div>
 
 
-                    <div class="btns" v-show="step==1">
-                        <button class="btn btn-primary" @click="toggleFactor" :disabled="!formIsComplete">ادامه</button>
-                    </div>
+                    
                 </section>
 
 
@@ -303,9 +293,6 @@
 
 <style>
 
-body{
-    visibility: hidden;
-}
 
 .gallery{
     min-height: 100px;
@@ -422,14 +409,18 @@ body{
     height: 330px;
     width: 280px;
 }
+
+
+ .authTabs a{
+    cursor: default;
+  }
 </style>
 
 
 
 
-{{ GET_SERVER_VALUES() }}
-{{ GET_APP_JS() }}
-
+@getAppVars
+@getAppScript
 
 
 

@@ -13,6 +13,7 @@ import Router from 'vue-router'
 
 
 import dashboard from './dashboard.vue'
+import discounts from './discounts.vue'
 import users from './users.vue'
 import sms from './sms.vue'
 import slider from './slider.vue'
@@ -48,6 +49,8 @@ const router = new Router({
       children: [
 
         { path: 'dashboard', component: dashboard },
+        
+        { path: 'discounts', component: discounts },
 
         { path: 'main', component: Container, children: [
 

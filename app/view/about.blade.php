@@ -16,8 +16,6 @@
     <div class="container">
         <div class="buy">
             {!! $des !!}
-
-            {{ "$des" }}
             <div class="clearfix"></div>
         </div>
     </div>

@@ -2,10 +2,10 @@
 
 global $db;
 
-$numbers = $db->select("users","sms=1");
+$numbers = $db->select("numbers");
 $txt_numbers = "";
-foreach ($numbers as $user) {
-	$txt_numbers .= $user['phone']."\n";
+foreach ($numbers as $n) {
+	$txt_numbers .= $n['number']."\n";
 }
 
 //$filename = "/tmp/numbers.txt"

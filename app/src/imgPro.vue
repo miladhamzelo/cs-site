@@ -1,6 +1,6 @@
 <template>
 
-	<img ref="el" :class="{noEffect}" :src="base +'assets/ajax-loader.gif'" >
+	<img ref="el" :class="{noEffect}" :src="assets +'ajax-loader.gif'" >
 
 </template>
 
@@ -12,12 +12,13 @@ export default {
 	props : ["src"],
 	data(){
 		return{	
-			base : SERVER["root"] + "app/" ,
+			assets : SERVER["assets"] ,
 
 			noEffect : true
 		}
 	},
 	mounted(){
+		
 
 		var el = this.$refs.el
 		var self = this
@@ -40,7 +41,7 @@ export default {
 
 			img.onerror = function (e) { 
 
-				el.src = self.base+"assets/default-placeholder.png";
+				el.src = self.assets+"default-placeholder.png";
 			}
 		}
 

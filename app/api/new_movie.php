@@ -103,7 +103,8 @@ if(!empty($_POST['id'])){
 
 
 	if(!$db->insert("movies", $fields)){
-		//print_r($fields);
+		print_r($fields);
+
 		$res["status"]  = "MOVIE INSERTION FAILD!";
 	}
 

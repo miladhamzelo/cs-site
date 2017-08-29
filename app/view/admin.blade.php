@@ -7,17 +7,17 @@
     <meta name="author" content="Mosaddek">
     <meta name="keyword" content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
     <link rel="shortcut icon" href="{{ assets }}/admin/img/favicon.html">
-    <title>پنل مدیریت</title>
+    <title>پنل  مدیریت</title>
     <!-- Bootstrap core CSS -->
 
-    <link href="{{ assets }}/admin/css/bootstrap.min.css" rel="stylesheet">
+    @style("admin/css/bootstrap.min.css")
     <!--external css-->
-    <link href="{{ assets }}/admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link href="{{ assets }}/admin/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen" />
-    <link rel="stylesheet" href="{{ assets }}/admin/css/owl.carousel.css" type="text/css">
+    @style("admin/assets/font-awesome/css/font-awesome.css")
+    @style("admin/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css")
+    @style("admin/css/owl.carousel.css")
     <!-- Custom styles for this template -->
-    <link href="{{ assets }}/admin/css/style.css" rel="stylesheet">
-    <link href="{{ assets }}/admin/css/style-responsive.css" rel="stylesheet" />
+    @style("admin/css/style.css")
+    @style("admin/css/style-responsive.css")
 
 
 </head>
@@ -32,7 +32,7 @@
                 <div class="sidebar-toggle-box">
                     <div data-original-title="Toggle Navigation" data-placement="right" class="icon-reorder tooltips"></div>
                 </div>
-                <!--logo start--><a href="#" class="logo">پنل<span>مدیریت</span></a>
+                <!--logo start--><a href="#" class="logo"> پنل <span> مدیریت </span></a>
                 <button class="btn btn-danger pull-left" style="margin: 15px" @click="logout">خروج</button>
                 <!-- inbox dropdown end -->
                 <!--  notification end -->
@@ -137,6 +137,9 @@
                    <!--     <li class="parent">
                             <router-link to="/users"> <i class="icon-play-circle"></i> <span>کاربران</span> </router-link>
                         </li> -->
+                        <li class="parent">
+                            <router-link to="/discounts"> <i class="icon-play-circle"></i> <span>تخفیف ها</span> </router-link>
+                        </li>
                         <li class="parent">
                             <router-link to="/setting"> <i class="icon-play-circle"></i> <span>تنظیمات</span> </router-link>
                         </li>
@@ -278,34 +281,34 @@ ul.sidebar-menu li li>a{
 
 <!-- DATEPICKER -->
 
-<link type="text/css" href="{{ assets }}jquery-datepicker/styles/jquery-ui-1.8.14.css" rel="stylesheet" />
-<script type="text/javascript" src="{{ assets }}jquery-datepicker/scripts/jquery-1.6.2.min.js"></script>
-<script type="text/javascript" src="{{ assets }}jquery-datepicker/scripts/jquery.ui.datepicker-cc.all.min.js"></script>
+@style("jquery-datepicker/styles/jquery-ui-1.8.14.css")
+@script("jquery-datepicker/scripts/jquery-1.6.2.min.js")
+@script("jquery-datepicker/scripts/jquery.ui.datepicker-cc.all.min.js")
 <script type="text/javascript">
         var $jQuery1_6 = $.noConflict(true);
 </script>
 
 <!-- DATEPICKER -->
 
-<script src="{{ assets }}/admin/tinymce/tinymce.min.js"></script>
+@script("admin/tinymce/tinymce.min.js")
 
 
-{{ GET_SERVER_VALUES() }}
-{{ GET_APP_JS() }}
+@getAppVars
+@getAppScript
 
-<script type="text/javascript" src="{{ assets }}/pdp/js/jquery-1.10.1.min.js"></script>
-<script src="{{ assets }}/admin/js/bootstrap.min.js"></script>
-<script src="{{ assets }}/admin/js/jquery.scrollTo.min.js"></script>
-<script src="{{ assets }}/admin/js/jquery.nicescroll.js" type="text/javascript"></script>
-<script src="{{ assets }}/admin/js/jquery.sparkline.js" type="text/javascript"></script>
-<script src="{{ assets }}/admin/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
-<script src="{{ assets }}/admin/js/owl.carousel.js"></script>
-<script src="{{ assets }}/admin/js/jquery.customSelect.min.js"></script>
+@script("pdp/js/jquery-1.10.1.min.js")
+@script("admin/js/bootstrap.min.js")
+@script("admin/js/jquery.scrollTo.min.js")
+@script("admin/js/jquery.nicescroll.js")
+@script("admin/js/jquery.sparkline.js")
+@script("admin/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js")
+@script("admin/js/owl.carousel.js")
+@script("admin/js/jquery.customSelect.min.js")
 
-<script src="{{ assets }}/admin/js/common-scripts.js"></script>
+@script("admin/js/common-scripts.js")
 
-<script src="{{ assets }}/admin/js/sparkline-chart.js"></script>
-<script src="{{ assets }}/admin/js/easy-pie-chart.js"></script>
+@script("admin/js/sparkline-chart.js")
+@script("admin/js/easy-pie-chart.js")
 
 
 

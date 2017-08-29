@@ -1,7 +1,24 @@
 <?php
-if($_GET['versioncode']<0){
-    echo 1;
-}else{
-    echo 0;
+$lastVersion = 3;
+$expiredVersion = 3;
+$userVersionCode = $_GET["versionCode"];// for example 6
+$isUpdateAvailable = false;
+$isExpired = false;
+
+$res = [];
+
+$res["isExpired"] = $isExpired;
+$res["isUpdateAvailable"] = $isUpdateAvailable;
+
+if($userVersionCode<$expiredVersion){
+  $isExpired = true;
+  $res["isExpired"] = $isExpired;
+  $res["isUpdateAvailable"] = $isUpdateAvailable;
+}else if($userVersionCode < $lastVersion){
+  $isUpdateAvailable = true;
+  $res["isExpired"] = $isExpired;
+  $res["isUpdateAvailable"] = $isUpdateAvailable;
 }
+
+echo json_encode($res);
 ?>

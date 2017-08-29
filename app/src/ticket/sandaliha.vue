@@ -3,10 +3,10 @@
 <div id="ReserveWindow" class="shadow" v-if="showWindow" @click.self="hideWindow">
 	<div class="content">
 	
-		<div class="col-md-12  info">
-            <div class="col-md-4"><strong>آزاد</strong></div>
-            <div class="col-md-4"><strong> پرده نمایش</strong></div>
-            <div class="col-md-4"><strong>خانواده</strong></div>
+		<div class="col-md-12 col-xs-12 info">
+            <div class="col-md-4 col-xs-4"><strong>آزاد</strong></div>
+            <div class="col-md-4 col-xs-4"><strong> پرده نمایش</strong></div>
+            <div class="col-md-4 col-xs-4"><strong>خانواده</strong></div>
         </div>
 
 		<chairs v-model="selectedChairs"></chairs>
@@ -90,7 +90,7 @@ export default {
 	
 #ReserveWindow { 
 
-z-index: 100;
+z-index: 9999;
 
 	position: fixed;
 	top: 0;
@@ -122,6 +122,7 @@ z-index: 100;
 	top:20px;
 	left: 50%;
 	margin-left: -425px;
+	    margin-bottom: 20px;
 	border-radius: 15px;
 
 }

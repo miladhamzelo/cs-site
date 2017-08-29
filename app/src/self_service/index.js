@@ -187,7 +187,7 @@ module.exports = {
       this.loadingWrapper = true
 
       let data = {
-          isConcert : this.entity == "film" ? "" : "1",
+          isConcert : this.entity == "film" ? false : true,
           mid: this.entity == "film" ? this.showtime.m_id :  this.showtime.c_id, 
           urid: this.showtime.uniqe_id, 
           uid: "0", // 0 means admin user id

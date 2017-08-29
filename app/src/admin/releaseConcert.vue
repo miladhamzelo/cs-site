@@ -126,10 +126,7 @@
             </section>
         </div>
     </div>
-    <button type="button" class="btn btn-success" :disabled="is_save"
-    @click="save()">ذخیره 
-       
-    </button>
+    <button type="button" class="btn btn-success"  @click="save">ذخیره </button>
 </div>
 
 </template>
@@ -173,7 +170,7 @@ export default {
                 prices_list : [],
                 
             },
-            formUrl : 'api/new_concert',
+
             showTimes : this.$root.showTimes
 
     
@@ -182,13 +179,22 @@ export default {
 
 	methods : {
 
-        save(){
+
+        save(e){
+
+            let el = $(e.target)
+            el.prop("disabled","1")
 
             this.concert.prices_list = this.rowsPrice
+            setTimeout(()=>{
 
-            this.sendForm(this.concert,this.formUrl,()=>{
-                alert("saved!!!!??")
-            })
+                this.sendForm(this.concert,'api/new_concert',(p)=>{
+                    if(p.finish){
+                        this.$router.replace("list-concerts");
+                    }
+                })  
+            
+            },1000)
         },
 
         priceInput(r, i, e){

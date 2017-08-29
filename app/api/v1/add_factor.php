@@ -1,5 +1,8 @@
 <?php
 
+die_when_site_down();
+
+
 global $db;
 
 $res = [];
@@ -24,7 +27,7 @@ foreach ($_POST['chairs'] as $chair)
 	$chairs .= $chair['name'] . ' ';
 
 $bought = "0";
-$code = mt_rand();
+$code = mt_rand(100000,999999);
 $res['code'] = $code;
 
 if($_POST['uid'] == "0")
@@ -60,49 +63,10 @@ if($res['is_add_factor'] == "1"){
 	$time = "${h}:${min}";
 	$date = gregorian_to_jalali($y, $m, $d, "/");
 
-	//======================================= ADD USER ==============================================
 
-	$userId = 0;
-
-
-	$user = array_pop($db->select("users","phone=".$_POST['user_mobile']));
-	//die($user['id']);
-	if(!empty($user)){
-
-		$userId = $user['id'];
-
-		$fields = array(
-			"fullName" => $_POST['user_name']
-		);
-
-		$db->update("users", $fields, "id=".$user['id']);
-			//$res["status"]  = "USER UPDATE FAILD!";
-		
-
-	}else{
-
-		$fields = array(
-			"fullName" => $_POST['user_name'],
-			"phone" => $_POST['user_mobile'],
-		);
-
-
-		if(!$db->insert("users", $fields)){
-
-			$res["status"]  = "USER INSERTION FAILD!";
-		}
-
-
-		$userId = array_pop($db->run("SELECT LAST_INSERT_ID();")[0]);
-		
-	}
-
-
-
-	//======================================= ADD USER ==============================================
 
 	$fields = array(
-		"user_id" => $userId,
+		"user_id" => $_POST['user_id'],
 		"movie_id" => $_POST['mid'],
 		"movie_type" => $movieType,
 		"reserve_id" => $_POST['uniqe_id'],

@@ -50,6 +50,17 @@
                   placeholder="جستجو">
                 </div>
 
+                <div class="col-md-12 " style="border-bottom: 1px solid #f3f3f3;display: inline-block;margin-top: 6px;padding:5px 0">
+                    <div class="col-md-4">
+                        تعداد کل صندلی ها: {{ count_of_all_chairs }}
+                    </div>
+                    <div class="col-md-4">
+                        حضوری : {{ count_of_offline_chairs }}
+                    </div>
+                    <div class="col-md-4">
+                        آنلاین : {{ count_of_online_chairs }}
+                    </div>
+                </div>
                 <table class="table table-striped table-advance table-hover">
                     <thead>
                         <tr>
@@ -79,17 +90,6 @@
                 </table>
                 <div class="col-md-12">
                     {{list_loading_msg}}
-                </div>
-                <div class="col-md-12 " style="border-top: 1px solid #f3f3f3;margin-top: 6px;padding:5px 0">
-                    <div class="col-md-4">
-                        تعداد کل صندلی ها: {{ count_of_all_chairs }}
-                    </div>
-                    <div class="col-md-4">
-                        حضوری : {{ count_of_offline_chairs }}
-                    </div>
-                    <div class="col-md-4">
-                        آنلاین : {{ count_of_online_chairs }}
-                    </div>
                 </div>
             </div>
         </section>

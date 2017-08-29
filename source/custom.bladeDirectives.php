@@ -1,27 +1,31 @@
 <?php
 
 
+$blade_compiler->directive('style', function($exp) {
 
-$blade_compiler->directive('myinput', function($exp) {
+	list($data) = explode(',',str_replace(['(',')',' ', "'", '"'], '', $exp));
+    return  '<link href="'.assets.$data.'" rel="stylesheet" type="text/css">';
+});
 
-	list($vars) = explode(',',str_replace(['(',')',' ', "'", '"'], '', $exp));
 
-	$vars = explode(".", $vars);
 
-	//print_r($vars);
+$blade_compiler->directive('script', function($exp) {
 
-	$new = "";
-	foreach ($vars as $key => $value) {
-		if($key == 0){
-			$new .= '$'.$value."['";
-		}else if($key == count($vars)-1){
-			$new .= $value."']";
-		}else{
-			$new .= $value."']['";
-		}
-	}
+	list($data) = explode(',',str_replace(['(',')',' ', "'", '"'], '', $exp));
+    return  '<script src="'.assets.$data.'"></script>';
+});
 
-    return  "<?php echo ${new} ?>";
+
+$blade_compiler->directive('getAppScript', function($exp) {
+	
+    return "<?php echo GET_APP_JS() ?>";
+});
+
+
+
+$blade_compiler->directive('getAppVars', function($exp) {
+
+    return "<?php echo GET_SERVER_VALUES() ?>";
 });
 
 

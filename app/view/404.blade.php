@@ -17,7 +17,7 @@
     <div  class="container"> 
         <div class="content w3-row w3-padding w3-white w3-card-2">
             <div class="row notfound">
-                <img src="{{ assets }}/notfound.png">
+                <img style="width:100%;max-width:70%" src="{{ assets }}/notfound.png">
             </div>
         </div>
     </div>

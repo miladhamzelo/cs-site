@@ -147,7 +147,9 @@ String.prototype.toFaDigit = function() {
 .txtdate{
 	position: absolute;
 	right: 0;
-	z-index: -1
+	z-index:  1000000;
+	opacity: 0;
+    width: 0;
 }
 
 .datecontrol{	margin: 0 5px;}

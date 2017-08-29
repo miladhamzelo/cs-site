@@ -12,11 +12,11 @@ if(!empty($_POST)){
 	
 
 	$fields =[
-		"sms" => true,
-		"phone" => $_POST["number"],
-		"fullName" => ""
+		
+		"number" => $_POST["number"],
+		
 	];
-	if(!$db->insert("users", $fields)){
+	if(!$db->insert("numbers", $fields)){
 
 		$res["status"]  = "MOBILE NUMBER INSERTION FAILD!";
 	}

@@ -11,7 +11,7 @@
 	        </div>
 	    </div>
 	    <div class="col-md-6" v-if="uploadedImages.length==0">
-	        <img v-for="img in get_images" :src="base +'assets/ajax-loader.gif'" v-img="base +'upload/'+ img" class="box">
+	        <img v-for="img in get_images" :src="assets +'ajax-loader.gif'" v-img="upload + img" class="box">
 	    </div>
 	    <div class="col-md-6" v-else>
 	        <img v-for="img in uploadedImages" :src="img" class="box">
@@ -30,7 +30,8 @@ export default {
 		return{
 
 			images : "",
-			base : SERVER['root'] + "app/" ,
+			upload : SERVER['upload'] ,
+			assets : SERVER['assets'] ,
 
 			pre : '',
 
@@ -144,7 +145,7 @@ export default {
 
 				img.onerror = function (e) { 
 				
-					el.src = v.context.base+"assets/default-placeholder.png";
+					el.src = v.context.assets+"default-placeholder.png";
 				}
 
 
@@ -154,7 +155,7 @@ export default {
 				el.src = b.value;
 				el.onerror = function (e) { 
 				
-					el.src = v.context.base+"assets/default-placeholder.png";
+					el.src = v.context.assets+"default-placeholder.png";
 				}
 			
 			}

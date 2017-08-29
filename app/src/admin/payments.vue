@@ -30,11 +30,14 @@
                                     <th><i class="icon-question-sign"></i>شماره مبایل</th>
                                     <th><i class="icon-question-sign"></i>تاریخ</th>
                                     <th><i class="icon-question-sign"></i>مبلغ پرداختی</th>
+                                    <th><i class="icon-question-sign"></i>شماره وضعیت</th>
                                     <th><i class="icon-question-sign"></i>وضعیت</th>
+                                    <th><i class="icon-question-sign"></i>شماره کارت</th>
                                     <th><i class="icon-question-sign"></i>اتوریتی</th>
                                     <th><i class="icon-question-sign"></i>سانس</th>
                                     <th><i class="icon-question-sign"></i>نوع بلیط</th>
                                     <th><i class="icon-question-sign"></i>ای دی فیلم/کنسرت</th>
+                                    <th><i class="icon-question-sign"></i>درگاه</th>
                                     
                                 </tr>
                             </thead>
@@ -46,11 +49,14 @@
                                     <td class="hidden-phone">{{n.mobile}}</td>
                                     <td class="hidden-phone">{{n.date}}</td>
                                     <td class="hidden-phone">{{n.amount}} تومان</td>
+                                    <td class="hidden-phone">{{n.resCode}}</td>
                                     <td class="hidden-phone">{{ payStatus(n) }}</td>
+                                    <td class="hidden-phone">{{n.cardNumber}}</td>
                                     <td class="hidden-phone">{{n.authority}}</td>
                                     <td class="hidden-phone">{{n.sans}}</td>
                                     <td class="hidden-phone">{{n.movie_type}}</td>
                                     <td class="hidden-phone">{{n.movie_id}}</td>
+                                    <td class="hidden-phone">{{n.type || 'zarinpal'}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -131,7 +137,7 @@ export default {
         },
 
         payStatus(n){
-            return n.refid == "0" ? "نا موفق" : "موفق"
+            return n.type == "mellat" ?  n.resCode == "0" ? "موفق" : "نا موفق" : n.refid == "0" ? "نا موفق" : "موفق"
         }
         
     }

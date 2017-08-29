@@ -6,6 +6,17 @@ define("SERVER_NAME", $_SERVER['SERVER_NAME']);
 
 
 
+
+$site_is_down = false;
+if(file_exists(".down")){
+	$site_is_down = true;
+	//define("SITE_DOWN", true);
+}
+
+
+
+
+
 $env_content = file_get_contents(".env");
 $env_content = explode("\n", $env_content);
 foreach ($env_content as $e) {
@@ -16,8 +27,6 @@ foreach ($env_content as $e) {
 }
 
 
-require("source/functions.php");
-require("controller.php");
 
 
 
@@ -42,38 +51,45 @@ $ctrl = empty($ctrl)? "index" : $ctrl;
 $param = array_slice($url,1); 
 
 
-SERVER("param", $param);
-SERVER("ctrl", $ctrl);
-SERVER("query", $_GET);
+require("source/functions.php");
+require 'source/defines.php';
+require 'configs.php';
 
 
-if(SERVER_NAME == 'localhost'){
-	SERVER("root", $dirname . '/');
-	$base = "http://localhost".$dirname."/";
+
+$hasController = false;
+$method  = 'index';
+
+if(file_exists("app/${ctrl}Controller.php")){
+	$hasController = true;
+	if(!empty($param))
+		$method = array_shift($param);
+	require "app/${ctrl}Controller.php";
 }else{
-	
-	$protocol = $_SERVER["SERVER_PROTOCOL"] == "HTTP/1.1" ? "http" : "https";
 
-	$dir = "/";
-	if(strpos(SERVER_NAME, 'ngrok') !== false)
-		$dir = $dirname."/";
-	SERVER("root", $dir);
-	$base = $protocol."://".SERVER_NAME."${dir}";
-
+	require "app/controller.php";
 }
 
 
-define("SERVER_PATH",$base);
-define("base",$base."app/");
-define("assets",base."view/assets/");
-define("upload",base."upload/");
 
+SERVER("param", $param);
+SERVER("ctrl", $ctrl);
+SERVER("query", $_GET);
+SERVER("upload", upload);
 SERVER("assets", assets);
 SERVER("base", base);
 
 
-$ctrl_name1 = dash_to_camelcase($ctrl);
-$ctrl_name2 = dash_to_underline($ctrl);
+
+if(!$hasController){
+	$ctrl_name1 = dash_to_camelcase($ctrl);
+	$ctrl_name2 = dash_to_underline($ctrl);
+}else{
+	$ctrl_name1 = dash_to_camelcase($method);
+	$ctrl_name2 = dash_to_underline($method);
+}
+	
+
 
 if(function_exists($ctrl_name1)) {
 	if(count_params($ctrl_name1) == 1)
@@ -88,12 +104,11 @@ if(function_exists($ctrl_name1)) {
 }else if(function_exists("_default")) {
 	_default();
 }else{
-	header("HTTP/1.0 404 Not Found");
-	exit;
+	page_404();
 }
 
 
-
+$_SESSION['flash_data'] = [];
 
 //=========================================================================================
 

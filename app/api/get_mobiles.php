@@ -7,7 +7,7 @@ $res = [];
 
 
 
-$res = $db->run("SELECT phone,id FROM users WHERE sms=1");
+$res = $db->select("numbers");
 
 
 echo json_encode($res);

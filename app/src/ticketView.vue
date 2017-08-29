@@ -61,7 +61,7 @@ export default {
 	props : ["value"],
 	data(){
 		return{	
-			imgPath : SERVER['base'] + '/assets/img/'
+			imgPath : SERVER['base'] + 'view/assets/img/'
 		}
 	},
 	created(){

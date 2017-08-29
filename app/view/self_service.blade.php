@@ -11,14 +11,14 @@
     <title>سرویس خرید بلیط</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="{{  assets  }}/admin/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{  assets  }}/admin/css/bootstrap-reset.css" rel="stylesheet">
+    @style("admin/css/bootstrap.min.css")
+    @style("admin/css/bootstrap-reset.css")
     <!--external css-->
-    <link href="{{  assets  }}/admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    @style("admin/assets/font-awesome/css/font-awesome.css")
     <!-- Custom styles for this template -->
-    <link href="{{  assets  }}/admin/css/style.css" rel="stylesheet">
-    <link href="{{  assets  }}/admin/css/style-responsive.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="{{  assets  }}/ticket.css">
+    @style("admin/css/style.css")
+    @style("admin/css/style-responsive.css")
+    @style("ticket.css")
 
 </head>
 
@@ -93,6 +93,7 @@
                                 <span class="chair red"></span><span class="chair-lable">خریداری شده</span>
                             </div>
                         </div>
+
 
                     </section>
                     <section class="panel panel-primary" v-if="entity=='film'">
@@ -189,12 +190,7 @@
 </html>
 
 
-<link rel="stylesheet" type="text/css" href="{{  assets  }}/ticket.css">
-
-
 <style scoped>
-
-
 
 
 
@@ -353,7 +349,7 @@
 
 
 
-<script type="text/javascript" src="{{  assets  }}/pdp/js/jquery-1.10.1.min.js"></script>
+@script("pdp/js/jquery-1.10.1.min.js")
 
-{{ GET_SERVER_VALUES() }}
-{{ GET_APP_JS() }}
+@getAppVars
+@getAppScript

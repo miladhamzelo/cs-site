@@ -2,7 +2,7 @@
 
 <div id="ReserveWindow" class="shadow" v-show="showWindow" @click.self="hideWindow">
 	<div class="content">
-		<steps :step="step"></steps>
+
 		<div class="stepView w3-padding-16 w3-container w3-right-align ">
 
 			<div class="step step-0"  v-show="step==0">
@@ -53,14 +53,10 @@
 
 <script>
 
-import steps from "./com/steps.vue"
+
 
 export default {
-	//props : ["show"],
 
-	components : {
-		steps
-	},
 
 	data(){
 		return{
@@ -121,6 +117,7 @@ export default {
 	left: 0;
 	right: 0;
 	bottom: 0;
+
 
 }
 

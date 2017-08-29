@@ -127,7 +127,8 @@ export default {
 	        if(this.$root.movie){
 	        	price = this.$root.movie.price
 	        }else{
-	        	price = parseInt(this.$root.concert.prices_list[r])
+	        	let prices = this.$root.concert.prices_list.split(" ")
+	        	price = parseInt(prices[r])
 	        }
 
 

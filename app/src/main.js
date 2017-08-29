@@ -2,6 +2,7 @@ import Vue from 'vue/dist/vue.js'
 import vueResource from 'vue-resource'
 import vueCookie from 'vue-cookie'
 import JDate from 'jalali-date'
+import store from './store'
 
 require("./functions.js")
 
@@ -29,11 +30,12 @@ try{
 
 
 
-
 new Vue({
 
 
   el: '#app',
+
+  store,
 
   mixins : [ page ],
 
@@ -45,7 +47,7 @@ new Vue({
   created(){
 
     console.log("Main Hook")
-    
+   
   },
   mounted(){
 

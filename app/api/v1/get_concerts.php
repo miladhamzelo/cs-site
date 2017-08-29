@@ -1,5 +1,8 @@
 <?php
 
+die_when_site_down();
+
+
 global $db;
 
 $res = [];

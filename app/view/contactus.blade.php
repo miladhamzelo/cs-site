@@ -57,7 +57,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-10 col-sm-offset-2">
-                            {{  $result }}  
+                            {{ $result }}  
                         </div>
                     </div>
                 </form>
@@ -81,8 +81,8 @@
 </style>
 
 
-{{ GET_SERVER_VALUES()  }}
-{{ GET_APP_JS()  }}
+@getAppVars
+@getAppScript
 
 
 @endsection

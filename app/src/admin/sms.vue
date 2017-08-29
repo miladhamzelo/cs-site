@@ -14,7 +14,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="(n,i) in numbers">
-                            <td><a href="#">{{n.phone}}</a></td>
+                            <td><a href="#">{{n.number}}</a></td>
                             <td><button class="btn btn-danger" @click="deleteNumber(i)">حذف</button></td>
                         </tr>
                     </tbody>

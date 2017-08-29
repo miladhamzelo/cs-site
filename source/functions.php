@@ -1,12 +1,145 @@
 <?php
 
 
+function alternative($ctrl){
+
+	if(function_exists($ctrl)){
+		$ctrl();
+		echo "<script>window.history.pushState('${ctrl}', '', '${ctrl}');</script>";
+	}
+}
+
+
+function flash($data){
+
+
+	if(is_array($data)){
+		// set array of flash
+		foreach ($data as $name => $val) {
+			$_SESSION["flash_data"][$name] = $val;
+		}
+		return;
+	}
+	// else get specify flash
+	return empty($_SESSION['flash_data'][$data]) ? null : $_SESSION['flash_data'][$data];
+}
+
+
+
+function send_password($number, $pass){
+
+	$postfields = array('receptor'=> $number, 'token'=> $pass, 'template'=>'pass');
+	$ch = curl_init();
+	$key = "505679597A7555626668626837497138696E674952773D3D";
+	curl_setopt($ch, CURLOPT_URL, "https://api.kavenegar.com/v1/${key}/verify/lookup.json");
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	// Edit: prior variable $postFields should be $postfields;
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); // On dev server only!
+	$result = curl_exec($ch);
+
+	return $result;
+	
+}
+
+
+
+function send_success_sms($number, $title, $code, $date, $time, $movieType){
+
+	$a = $movieType == "film" ? 'اکران' : 'اجرا';
+	$dateTime = $time+"-"+$date;
+
+	$postfields = array('receptor'=> $number, "template"=> "pay", 'token10'=> $title, 
+		'token'=> $code, 'token2'=> $dateTime);
+	$ch = curl_init();
+	$key = "505679597A7555626668626837497138696E674952773D3D";
+	curl_setopt($ch, CURLOPT_URL, "https://api.kavenegar.com/v1/${key}/verify/lookup.json");
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	// Edit: prior variable $postFields should be $postfields;
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); // On dev server only!
+	$result = curl_exec($ch);
+
+	return $result;
+	
+}
+
+
+
+
+function bank_enabled($enabled){
+	if($enabled)
+		require_once 'source/mellat.bank.requests.php';
+	else
+		require_once 'source/zarinpal.bank.requests.php';
+	
+}
+
+
+
+
+function myhash($data){
+	global $hash_salt;
+	return hash("sha512", $data . $hash_salt);
+}
+
+
+function die_when_site_down(){
+
+	global $site_is_down;
+
+	if($site_is_down)
+		die();
+	
+}
+
+
+
+
+function page_404(){
+
+	global $site_is_down;
+
+	if($site_is_down){
+
+		view("updating");
+		exit;
+	}
+
+	view("404");
+	exit;
+}
+
+
+
+
+
+function only_show_if_site_down($pages=[]){
+
+	global $site_is_down;
+	global $ctrl;
+	$pages[] = "api";
+	if($site_is_down && !in_array($ctrl, $pages)){
+
+		view("updating");
+		exit;
+	}
+}
+
+
+
+
 function view($filename, $args=[]){
 
 	global $blade_factory;
 
 	echo $blade_factory->make($filename, $args)->render();
 }
+
 
 function env($key, $default=""){
 	//$env = $_ENV["env"];
@@ -106,7 +239,7 @@ function GET_APP_JS() {
 
 	$rnd = mt_rand();
     
-    echo "<script src='".base."/dist/main.build.js?${rnd}'></script>";
+    return "<script src='".base."/dist/main.build.js?${rnd}'></script>";
 }
 
 
@@ -114,9 +247,11 @@ function GET_SERVER_VALUES() {
     
     global $scripts;
 
-    echo "<script>";
-    echo $scripts;
-    echo "</script>";
+    $a = "<script>";
+    $a .= $scripts;
+    $a .= "</script>";
+
+    return $a;
 }
 
 
@@ -130,7 +265,7 @@ function count_params($func) {
     return $reflection->getNumberOfParameters();
 }
 
-
+/*
 function script($src, $basePath = ""){
 
 	global $scripts;
@@ -152,7 +287,7 @@ function get_scripts(){
 	}
 
 }
-
+*/
 
 function encryptstr($str){
 	
@@ -204,7 +339,149 @@ function check_user_agent ( $type = NULL ) {
         return false;
 }
 
-
+function mellat_payment_status($a){
+	switch ($a) {
+	case 0:
+	$show = 'با موفقیت پرداخت شد';
+	break;
+	case 1:
+	$show = 'عملیات ناموفق';
+	break;
+	case 11:
+	$show = 'شماره کارت نامعتبر است';
+	break;
+	case 12:
+	$show = 'موجودي كافي نيست';
+	break;
+	case 13:
+	$show = 'رمز نادرست است';
+	break;
+	case 14:
+	$show = 'تعداد دفعات وارد كردن رمز بيش از حد مجاز است';
+	break;
+	case 15:
+	$show = 'كارت نامعتبر است';
+	break;
+	case 16:
+	$show = 'دفعات برداشت وجه بيش از حد مجاز است';
+	break;
+	case 17:
+	$show = 'كاربر از انجام تراكنش منصرف شده است';
+	break;
+	case 18:
+	$show = 'تاريخ انقضاي كارت گذشته است';
+	break;
+	case 19:
+	$show = 'مبلغ برداشت وجه بيش از حد مجاز است';
+	break;
+	case 111:
+	$show = 'صادر كننده كارت نامعتبر است';
+	break;
+	case 112:
+	$show = 'خطاي سوييچ صادر كننده كارت';
+	break;
+	case 113:
+	$show = 'پاسخي از صادر كننده كارت دريافت نشد';
+	break;
+	case 114:
+	$show = 'دارنده كارت مجاز به انجام اين تراكنش نيست';
+	break;
+	case 21:
+	$show = 'پذيرنده نامعتبر است';
+	break;
+	case 23:
+	$show = 'خطاي امنيتي رخ داده است';
+	break;
+	case 24:
+	$show = 'طلاعات كاربري پذيرنده نامعتبر است';
+	break;
+	case 25:
+	$show = 'مبلغ نامعتبر است';
+	break;
+	case 31:
+	$show = 'پاسخ نامعتبر است';
+	break;
+	case 32:
+	$show = 'فرمت اطلاعات وارد شده صحيح نمي باشد';
+	break;
+	case 33:
+	$show = 'حساب نامعتبر است';
+	break;
+	case 34:
+	$show = 'خطاي سيستمي';
+	break;
+	case 35:
+	$show = 'تاريخ نامعتبر است';
+	break;
+	case 41:
+	$show = 'شماره درخواست تكراري است';
+	break;
+	case 42:
+	$show = 'راكنش Sale يافت نشد';
+	break;
+	case 43:
+	$show = 'قبلا درخواست Verify داده شده است';
+	break;
+	case 44:
+	$show = 'درخواست Verfiy يافت نشد';
+	break;
+	case 45:
+	$show = 'تراكنش Settle شده است';
+	break;
+	case 46:
+	$show = 'تراكنش Settle نشده است';
+	break;
+	case 47:
+	$show = 'تراكنش Settle يافت نشد';
+	break;
+	case 48:
+	$show = 'تراكنش Reverse شده است';
+	break;
+	case 49:
+	$show = 'تراكنش Refund يافت نشد';
+	break;
+	case 412:
+	$show = 'شناسه قبض نادرست است';
+	break;
+	case 413:
+	$show = 'شناسه پرداخت نادرست است';
+	break;
+	case 414:
+	$show = 'سازمان صادر كننده قبض نامعتبر است';
+	break;
+	case 415:
+	$show = 'زمان جلسه كاري به پايان رسيده است';
+	break;
+	case 416:
+	$show = 'خطا در ثبت اطلاعات';
+	break;
+	case 417:
+	$show = 'شناسه پرداخت كننده نامعتبر است';
+	break;
+	case 418:
+	$show = 'اشكال در تعريف اطلاعات مشتري';
+	break;
+	case 419:
+	$show = 'تعداد دفعات ورود اطلاعات از حد مجاز گذشته است';
+	break;
+	case 421:
+	$show = 'IPنامعتبر است';
+	break;
+	case 51:
+	$show = 'تراكنش تكراري است';
+	break;
+	case 54:
+	$show = 'تراكنش مرجع موجود نيست';
+	break;
+	case 55:
+	$show = 'تراكنش نامعتبر است';
+	break;
+	case 61:
+	$show = 'خطا در واريز';
+	break;
+	}
+	return $show;
+}
 
 
 function zarinpal_error_msg($id){
@@ -262,54 +539,6 @@ function zarinpal_error_msg($id){
 		break;
 	}
 }
-/*
-
-function show_page($page=null){
-	
-	global $ctrl;
-	global $param;
-	
-	$page = empty($page)? (empty($param[0])? null : $param[0]) : $page;
-	$f = "app/pages/".$ctrl."/".$page.".php";
-	if(!empty($page) && file_exists($f)){
-		require($f);
-		return true;
-	}
-	return false;
-}
-function vue_com($comName=""){
-	
-	global $ctrl;
-	global $param;
-	
-	
-	$f = "app/components/".$comName."/index.html"
-	if(!empty($comName) && file_exists($f)){
-		require($f);
-		return true;
-	}
-	return false;
-}
-function show_layout($layout){
-	
-	//if(nobody) return false;
-	
-	$f = "app/layout/".$layout.".php";
-	if(!empty($layout) && file_exists($f)){
-		
-		include($f);
-		return true;
-	}
-	return false;
-}
-
-function page_name(){
-	
-	global $param; 
-	if(!empty($param[0])) return $param[0];
-	return null;
-}
-*/
 
 
 //=====================================================

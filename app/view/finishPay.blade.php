@@ -65,11 +65,11 @@
 
 </style>
 
- <script src="{{  assets  }}/html2canvas.js"></script>
- <script src="{{  assets  }}/jspdf.js"></script>
+@script("html2canvas.js")
+@script("jspdf.js")
  
-{{  GET_SERVER_VALUES()  }}
-{{  GET_APP_JS()  }}
+@getAppVars
+@getAppScript
 
 
 @endsection

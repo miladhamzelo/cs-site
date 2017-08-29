@@ -4,11 +4,11 @@
     <div class="row">
         <div class="col-lg-12">
             <section class="panel">
-                <header class="panel-heading">لیست اکران ها </header>
+                <header class="panel-heading">لیست برنامه های فرهنگی </header>
                 <table class="table table-striped table-advance table-hover">
                     <thead>
                         <tr>
-                            <th><i class="icon-bullhorn"></i>لیست فیلم ها</th>
+                            <th><i class="icon-bullhorn"></i>لیست برنامه ها</th>
                             <th>وضعیت</th>
                             <th>عملیات</th>
                         </tr>
@@ -28,7 +28,7 @@
             </section>
         </div>
     </div>
-    <router-link class="btn btn-success" :to="'/concerts/release-concert'"> فیلم جدید</router-link>
+    <router-link class="btn btn-success" :to="'/concerts/release-concert'"> برنامه جدید</router-link>
   
 </div>
 

@@ -11,18 +11,18 @@
     <title>Login</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="{{  assets  }}/admin/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{  assets  }}/admin/css/bootstrap-reset.css" rel="stylesheet">
+    @style("admin/css/bootstrap.min.css")
+    @style("admin/css/bootstrap-reset.css")
     <!--external css-->
-    <link href="{{  assets  }}/admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    @style("admin/assets/font-awesome/css/font-awesome.css")
     <!-- Custom styles for this template -->
-    <link href="{{  assets  }}/admin/css/style.css" rel="stylesheet">
-    <link href="{{  assets  }}/admin/css/style-responsive.css" rel="stylesheet" />
+    @style("admin/css/style.css")
+    @style("admin/css/style-responsive.css")
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
     <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <script src="js/respond.min.js"></script>
+    @script("js/html5shiv.js")
+    @script("js/respond.min.js")
     <![endif]-->
 </head>
 

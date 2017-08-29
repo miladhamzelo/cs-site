@@ -13,10 +13,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <h3 v-if="news.length == 0">درحال بارگزاری...</h3>
-                    <tr v-for="n in news">
+                    <p v-if="news.length == 0">درحال بارگزاری...</p>
+                    <tr v-for="(n,i) in news">
                         <td><router-link :to="'edit-news?id='+n.id">{{n.title}}</router-link></td>
                         <td class="hidden-phone">{{n.date}}</td>
+                        <td class="hidden-phone">
+                            <button class="btn btn-danger" @click="deleteNews(i)">حذف</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -28,6 +31,7 @@
 </template>
 
 <script>
+
 
 export default {
 
@@ -51,6 +55,17 @@ export default {
                 this.news = res.body;
 
                // console.log(res)
+            })
+        },
+
+        deleteNews(i){
+
+            let id = this.news[i].id
+            this.news.splice(i,1)
+
+            this.$http.get("api/delete_news", {params:{id}}).then((res)=>{
+
+                console.log(res.body)
             })
         }
 

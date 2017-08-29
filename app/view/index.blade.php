@@ -1,6 +1,36 @@
 @extends('layouts.master')
 
 
+@section("head")
+    
+    @parent
+
+    @style("css/unslider.css")
+    @script("js/unslider.js")
+    <style>
+        .sliders{min-height:400px;}
+
+        .movie{
+            height:300px;
+        }
+        .movie img{
+            height:100%;
+        }
+
+        .cover img{
+            width: 100% !important;
+            height: 300px !important;
+        }
+
+        .promotion img{
+               width: 258px !important;
+            height: 128px !important;
+        }
+    </style>
+
+@endsection
+
+
 @section('main')
 
 <div id="app">
@@ -29,36 +59,36 @@
     <div class="container">
 
 <div class="col-md-6">
-               <ul class="social">
+   <ul class="social">
 
-                    <li>
+        <li>
 
-                        <a href="{{  $telegram  }}" target="_blank"><img src="{{ assets }}img/telegram.png"></a>
+            <a href="{{ $telegram }}" target="_blank"><img src="{{ assets }}img/telegram.png"></a>
 
-                    </li>
+        </li>
 
-                    <li>
+        <li>
 
-                        <a href="{{  $instagram  }}" target="_blank"><img src="{{assets}}img/instagram.png"></a>
+            <a href="{{ $instagram }}" target="_blank"><img src="{{ assets }}img/instagram.png"></a>
 
-                    </li>
+        </li>
 
-                    <li>
+        <li>
 
-                        <a href="{{  $bazar  }}" target="_blank"><img src="{{assets}}img/android.png"></a>
+            <a href="{{ $bazar }}" target="_blank"><img src="{{ assets }}img/android.png"></a>
 
-                    </li>
+        </li>
 
-                    <div class="clearfix"></div>
+        <div class="clearfix"></div>
 
-                </ul>
+    </ul>
 </div>
 <div class="col-md-6">
-            <ul style="margin: 15px 0;">
-                <li><i class="fa fa-envelope" aria-hidden="true"></i> {{ $siteEmail }} </li>
-                <li><i class="fa fa-phone-square" aria-hidden="true"></i>{{ $phone }}</li>
-                <div class="clearfix"></div>
-            </ul>
+    <ul style="margin: 15px 0;">
+        <li><i class="fa fa-envelope" aria-hidden="true"></i> {{ $siteEmail }} </li>
+        <li><i class="fa fa-phone-square" aria-hidden="true"></i>{{ $phone }}</li>
+        <div class="clearfix"></div>
+    </ul>
 </div>
 
 <div class="clearfix"></div>
@@ -80,9 +110,22 @@
         <div class="col-md-4 cold-sm-12">
             <div class="comingsoon">
                 <div class="head">
-                    <h2>به زودی در سینما ستاره</h2> </div>
-                <div class="cover"> <img src="{{ upload }}/{{ $nextMovie['image'] }}">
-                    <h5>{{ $nextMovie["name"] }}</h5> </div>
+                    <h2>به زودی در سینما ستاره</h2> 
+                </div>
+                <div class="sliders">
+                    <ul>
+                        @foreach($nextMovies as $nm)
+                        <li>
+                            <div class="cover"> <img src="{{ upload . $nm['image'] }}">
+                                <h5>{{ $nm["name"] }}</h5> 
+                            </div>
+
+                        </li>
+                        @endforeach
+                        <div class="clearfix"></div>
+                    </ul>
+                </div>
+                
             </div>
         </div>
         <div class="clearfix"></div>
@@ -103,7 +146,7 @@
             @foreach($movies as $m)
             <div class="col-md-6">
                 <div class="movie">
-                    <a href="ticket?id={{ $m['id'] }}"> <img src="{{ upload }}{{ $m['bg_image'] }}">
+                    <a href="ticket?id={{ $m['id'] }}"> <img src="{{ upload . $m['bg_image'] }}">
                         <div class="overly"> </div>
                         <h2>{{ $m["title"] }}</h2>
                         <div class="row">
@@ -133,7 +176,7 @@
             @foreach($concerts as $c)
             <div class="col-md-6">
                 <div class="movie">
-                    <a href="ticket?cid={{ $c['id'] }}"> <img src="{{ upload }}{{ $c['bg_image'] }}">
+                    <a href="ticket?cid={{ $c['id'] }}"> <img src="{{ upload . $c['bg_image'] }}">
                         <div class="overly"> </div>
                         <h2>{{ $c['title'] }}</h2>
 						<div class="row">
@@ -173,18 +216,19 @@
             <div class="col-md-8">
                 <div class="newsbox">
                     <div class="head"> <img src="{{ assets }}img/news.png">
-                        <h4>اخبار</h4> </div>
+                       <a href="news"><h4>اخبار</h4> </a></div>
                     <div class="clearfix"></div>
                     @foreach($news as $n)
                     <div class="col-md-6">
                         <div class="news">
-                            <a href="news?id={{ $n['id'] }}"><div class="image"><img src="{{ upload }}/{{ $n['image'] }}"></a>
-                                <div class="date">{{ $n.date }}</div>
+                            <a href="news?id={{ $n['id'] }}"><div class="image"><img src="{{ upload . $n['image'] }}"></a>
+                                <div class="date">{{ $n["date"] }}</div>
                         </div>
                         <a href="news?id={{ $n['id'] }}"><h2>{{ $n['title'] }}</h2></a> 
                     </div>
                     </div>
                     @endforeach
+
                     <div class="clearfix"></div>
                 </div>
             </div>
@@ -195,7 +239,7 @@
                     </div> 
                     @foreach($promotions as $p)
                     <a href="http://{{ $p['link'] }}">
-                        <img src="{{ upload }}/{{ $p['image'] }}"> 
+                        <img src="{{ upload . $p['image'] }}"> 
                     </a>
                     @endforeach
                 </div>
@@ -213,8 +257,8 @@
 </div>
 
 
-{{  GET_SERVER_VALUES()   }}
-{{  GET_APP_JS()          }}
+@getAppVars
+@getAppScript
 
 <script type="text/javascript">
 
@@ -252,28 +296,23 @@
             };
 
             jssor_1_slider_init();
+
+
+
+      
+            $('.sliders').unslider({
+                animation: 'fade',
+
+                autoplay: true,
+                infinite: false,
+                keys: false,
+                arrows: false,
+                nav: false
+            });
+
+            
 </script>
 
-
-<style>
-
-.movie{
-    height:300px;
-}
-.movie img{
-    height:100%;
-}
-
-.cover img{
-    width: 100% !important;
-    height: 300px !important;
-}
-
-.promotion img{
-       width: 258px !important;
-    height: 128px !important;
-}
-</style>
 
 
 
