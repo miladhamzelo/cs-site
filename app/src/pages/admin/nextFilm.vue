@@ -34,7 +34,7 @@
 <script>
 	
 import sendForm from './libs/send_form.js'
-import imageInput from './com/imageInput.vue'
+import imageInput from '../../components/imageInput.vue'
 
 export default {
 

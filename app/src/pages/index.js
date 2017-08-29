@@ -2,20 +2,9 @@
 
 module.exports = {
 
-  components : {
-  	
-  },
 
   data() {
     return {
-   /*   movies :  [],
-      concerts :  [],
-      nextMovie :  {},
-      movieTrailer : {},
-      promotions :  [],
-      setting :  {},
-      news :  [],
-      slider : {},*/
 
       mobile : "",
       mobileMsg : "",
@@ -23,17 +12,7 @@ module.exports = {
     }
   },
   created() {
-    console.log("index")
-    
-  /*  this.setting = SERVER['setting'] ? JSON.parse(SERVER['setting']) : {}
-    this.promotions = SERVER['promotions'] ? JSON.parse(SERVER['promotions']) : []
-    this.news = SERVER['news'] ? JSON.parse(SERVER['news']) : []
-    this.movieTrailer = SERVER['movie_trailer'] ? JSON.parse(SERVER['movie_trailer']) : {}
-    this.nextMovie = SERVER['next_movie'] ? JSON.parse(SERVER['next_movie']) : {}
-    this.movies = SERVER['movies'] ? SERVER['movies'] : []
-    this.concerts = SERVER['concerts'] ? SERVER['concerts'] : []
-    this.slider = SERVER['slider'] ? JSON.parse(SERVER['slider']) : {slides:[]}
-*/
+    console.log("index!!!")
 
     
   },

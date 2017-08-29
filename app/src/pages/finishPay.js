@@ -1,4 +1,4 @@
-import ticketView2 from '../ticketView2.vue'
+import ticketView2 from '../components/ticketView2.vue'
 
 module.exports = {
 

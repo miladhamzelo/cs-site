@@ -14,14 +14,14 @@ Vue.http.options.emulateHTTP = true;
 if(SERVER['root'] != '/')
   Vue.http.options.root = SERVER['root']
 else
-   Vue.http.options.root = ""
+  Vue.http.options.root = ""
 
 var page;
 
 try{
 
 
-  page = require('./'+ SERVER["ctrl"].replaceAll("-","_") +'/index.js')
+  page = require('./pages/'+ SERVER["ctrl"].dashToCamelCase() +'.js')
 
 }catch(err) {
 

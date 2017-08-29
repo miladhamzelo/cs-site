@@ -50,7 +50,7 @@
 <script>
     
 import sendForm from './libs/send_form.js'
-import tinymce from './com/tinymce.vue'
+import tinymce from '../../components/tinymce.vue'
 
 
 export default {

@@ -2,7 +2,6 @@
 
 <div>
 
-
     <div class="col-lg-12" v-if="loading">
         <section class="panel">
             <div class="panel-body">
@@ -12,37 +11,37 @@
     </div>
 
     <div class="col-lg-12" v-else>
-
-       <div class="row" v-for="(s,i) in slider.slides">
+       <div class="row" v-for="(p,i) in promotions">
             <div class="col-lg-12">
                 <section class="panel">
-                    <header class="panel-heading">اسلاید {{(i+1).toFaDigit()}}
-                    <button class="btn btn-danger"  style="float: left;" @click="deleteSlide(i)">حذف</button>
+                    <header class="panel-heading">پیشنهاد ویژه {{(i+1).toFaDigit()}}
+                    <button class="btn btn-danger" style="float: left;" @click="deletePromotion(i)">حذف</button>
                     </header> 
                     <div class="panel-body form-horizontal tasi-form">
                         <div class="form-group">
-                            <imageInput  v-model="s.image" :prefix="form.uploadKey" :name="'slide_image'+i" @change="onFileChange">
+                            <imageInput  v-model="p.image" :prefix="form.uploadKey" :name="'promotion_image'+i" @change="onFileChange">
                                 سایز عکس 50px * 100px
                             </imageInput>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">لینک : </label>
                             <div class="col-sm-10">
-                                <linkpicker v-model="s.link">
+                                <linkpicker v-model="p.link">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">توضیح کوتاه : </label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="s.alt"> </div>
+                                <input type="text" class="form-control" v-model="p.alt"> </div>
                         </div>
                     </div>
                 </section>
             </div>
         </div>
         <button type="button" class="btn btn-success" @click="sendForm(form, url, progress)">ذخیره</button>
-        <button type="button" class="btn btn-primary" @click="newSlide">+ جدید</button>
+        <button type="button" class="btn btn-primary" @click="newPromotion">+ جدید</button>
     </div>
+
 
 </div>
 
@@ -51,8 +50,8 @@
 <script>
     
 import sendForm from './libs/send_form.js'
-import imageInput from './com/imageInput.vue'
-import linkpicker from './com/linkpicker.vue'
+import imageInput from '../../components/imageInput.vue'
+import linkpicker from '../../components/linkpicker.vue'
 
 export default {
 
@@ -62,44 +61,41 @@ export default {
     data(){
         return{
 
-            slider : {
-                slides : []
-            },
+            promotions : [],
 
             loading : true,
 
             url : 'api/new_data',
 
             form : {
-                name : "slider",
+                name : "promotions",
                 uploadKey : getRandomInt(1,100000) ,
                 data : ''
             }
         }
     },
     watch : {
-        slider : {
+        promotions : {
             deep : true,
             handler(val){
-                this.form.data = JSON.stringify(this.slider)
+                this.form.data = JSON.stringify(this.promotions)
             }
         }
     },
     created() {
-
         setTimeout(()=>{
 
-            this.$http.get("api/get_data",{params:{name:"slider"}})
+            this.$http.get("api/get_data",{params:{name:"promotions"}})
             .then(res=>{
                console.log(res)
-               this.loading = false
+               this.loading = false;
                 if(res.body.data != "" && res.body.data != undefined && res.body.data != "null"){
 
-                    this.slider = JSON.parse(res.body.data)
+                    this.promotions = JSON.parse(res.body.data)
                     
                 }else{
 
-                    this.slider.slides = [{image:'', link:'', alt:''}]
+                    this.promotions = [{image:'', link:'', alt:''}]
                 }
             })
         },1000)
@@ -115,13 +111,13 @@ export default {
         },
 
 
-        newSlide(){
-            this.slider.slides.push({image:'', link:'', alt:''})
+        newPromotion(){
+            this.promotions.push({image:'', link:'', alt:''})
         },
 
-        deleteSlide(i){
+        deletePromotion(i){
 
-            this.slider.slides.splice(i,1)
+            this.promotions.splice(i,1)
         }
 
     }

@@ -1,8 +1,8 @@
 
-import chairs from '../ticket/chairs.vue'
-import ticketView from '../ticketView.vue'
+import chairs from '../components/chairs.vue'
+import ticketView from '../components/ticketView.vue'
 
-import checkTicketPage from '../admin/checkTicket.vue'
+import checkTicketPage from './admin/checkTicket.vue'
 
 module.exports = {
 

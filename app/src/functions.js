@@ -26,6 +26,13 @@ window.enInt = function(value) {
 
 }
 
+String.prototype.dashToCamelCase = function() {
+    
+    return this.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+
+};
+
+
 String.prototype.toFaDigit = function() {
     return this.replace(/\d+/g, function(digit) {
         var ret = '';

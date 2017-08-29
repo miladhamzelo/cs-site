@@ -79,7 +79,7 @@
 
 <script>
     
-import chairs from '../ticket/chairs.vue'
+import chairs from '../../components/chairs.vue'
 
 export default {
 

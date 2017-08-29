@@ -1,5 +1,5 @@
-import ticketView2 from '../ticketView2.vue'
-import forgetPass from '../forgetPass.vue'
+import ticketView2 from '../components/ticketView2.vue'
+import forgetPass from '../components/forgetPass.vue'
 
 module.exports = {
 

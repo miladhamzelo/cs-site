@@ -15,63 +15,18 @@
     <div class="row">
         <div class="col-lg-12">
             <section class="panel">
-                <header class="panel-heading">{{header}}  فیلم </header>
+                <header class="panel-heading">مشخصات کنسرت </header>
                 <div class="panel-body">
                     <form class="form-horizontal tasi-form" method="get">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">نام فیلم</label>
+                            <label class="col-sm-2 control-label">عنوان کنسرت</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="movie.title"> </div>
+                                <input type="text" class="form-control" v-model="concert.title"> </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">سبک</label>
+                            <label class="col-sm-2 control-label">توضیحات</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="movie.type"> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">کارگردان</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="movie.director"> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">تهیه کننده</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="movie.producer"> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">سال ساخت</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="movie.year"> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">بازیگران</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="movie.actors"> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">سایر عوامل فیلم </label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="movie.other_agents"> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">داستان فیلم </label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="movie.des"> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">مدت فیلم (دقیقه)</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="movie.time_out"> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">قیمت صندلی (تومان)</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="movie.price"> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">قیمت نیم بها (تومان)</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="movie.half_price"> </div>
+                                <input type="text" class="form-control" v-model="concert.des"> </div>
                         </div>
                     </form>
                 </div>
@@ -83,7 +38,7 @@
             <section class="panel">
                 <header class="panel-heading"> تصویر کاور فیلم </header>
                 <div class="panel-body">
-                   <imageInput v-model="movie.image" name="image" @change="onFileChange">
+                   <imageInput v-model="concert.image" name="image" @change="onFileChange">
                         سایز عکس 20px * 40px
                    </imageInput>
                 </div>
@@ -93,7 +48,7 @@
             <section class="panel">
                 <header class="panel-heading"> تصویر پسزمینه فیلم </header>
                 <div class="panel-body">
-                    <imageInput v-model="movie.bg_image" name="bgImage" @change="onFileChange">
+                    <imageInput v-model="concert.bg_image" name="bgImage" @change="onFileChange">
                         سایز عکس 100px * 80px
                     </imageInput>
                 </div>
@@ -103,15 +58,32 @@
     <div class="row">
         <div class="col-lg-12">
             <section class="panel">
+                <header class="panel-heading">قیمت صندلی ها</header>
+                <div class="panel-body">
+                    <form class="form-horizontal tasi-form" method="get">
+                        <div class="form-group" v-for="(r,i) in rowsCount"> 
+                            <label class="col-sm-2 control-label"><span style="font-weight: 100">ردیف شماره </span>{{ (15-r)+1 }}</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" @input="priceInput(r, i, $event)" :value="rowsPrice[i]"> 
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+ <!--   <div class="row">
+        <div class="col-lg-12">
+            <section class="panel">
                 <header class="panel-heading">گالری </header>
                 <div class="panel-body">
-                    <imageInput v-model="movie.scenes" name="scenes" @change="onFileChange" multiple>
+                    <imageInput v-model="concert.scenes" name="scenes" @change="onFileChange" multiple>
                         سایز عکس 100px * 80px
                     </imageInput>
                 </div>
             </section>
         </div>
-    </div>
+    </div> -->
     <div class="row">
         <div class="col-lg-12">
             <section class="panel">
@@ -126,12 +98,12 @@
                                         <th></th>
                                         <th><i class="icon-bullhorn"></i>تاریخ ها</th>
                                         <th>سانس ها</th>
-                                        <th>نیم بها</th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-if="movie.chart.length==0" class="w3-text-grey"><td>هنوز تاریخی ثبت نشده است</td></tr>
-                                    <tr v-for="(r,i) in movie.chart">
+                                    <tr v-if="concert.chart.length==0" class="w3-text-grey"><td>هنوز تاریخی ثبت نشده است</td></tr>
+                                    <tr v-for="(r,i) in concert.chart">
                                         <td> 
                                             <button class="btn btn-danger" @click="remove_date(i)">
                                                 <i class="icon-trash"></i>
@@ -139,9 +111,7 @@
                                         </td>
                                         <td> <datePicker v-model="r.date"></datePicker> </td>
                                         <td> <timePicker v-model="r.times" ></timePicker> </td>
-                                        <td>
-                                            <input class="form-control" type="checkbox" v-model="r.is_half_price">
-                                        </td>
+                                       
                                     </tr>
                                 </tbody>
                             </table>
@@ -156,8 +126,7 @@
             </section>
         </div>
     </div>
-    <button type="button" class="btn btn-success" :disabled="is_save"
-    @click="save">ذخیره </button>
+    <button type="button" class="btn btn-success"  @click="save">ذخیره </button>
 </div>
 
 </template>
@@ -170,9 +139,9 @@
 
 import sendForm from './libs/send_form.js'
 
-import datePicker from './com/datepicker.vue'
-import timePicker from './com/timepicker.vue'
-import imageInput from './com/imageInput.vue'
+import datePicker from '../../components/datepicker.vue'
+import timePicker from '../../components/timepicker.vue'
+import imageInput from '../../components/imageInput.vue'
 
 export default {
 
@@ -184,21 +153,24 @@ export default {
     data(){
         return{
 
+            rowsCount : 15,
+
+            rowsPrice : new Array(15).fill(),
+
             loading: true,
 
             loadingProgress : "",
 
-            movie : {
+            concert : {
                 chart:[],
                 title : '',
                 des : '',
-                producer : '',
-                director : '',
-                year : '',
-                price : '50000',
-                time_out : ''
+                bg_image : '',
+                image : '',
+                prices_list : [],
+                
             },
-           
+
             showTimes : this.$root.showTimes
 
     
@@ -207,35 +179,57 @@ export default {
 
 	methods : {
 
+
         save(e){
 
             let el = $(e.target)
             el.prop("disabled","1")
+
+            this.concert.prices_list = this.rowsPrice
             setTimeout(()=>{
 
-                this.sendForm(this.movie,'api/new_movie',(p)=>{
+                this.sendForm(this.concert,'api/new_concert',(p)=>{
                     if(p.finish){
-                        this.$router.replace("list-movies");
+                        this.$router.replace("list-concerts");
                     }
                 })  
             
             },1000)
         },
 
+        priceInput(r, i, e){
+
+            let oldval = this.rowsPrice[i]
+            let newval = $(e.target).val()
+
+            let oi = this.rowsPrice.indexOf(oldval, i)
+            console.log(oi)
+            for(let j=oi+1; j<this.rowsPrice.length; j++){
+                if(this.rowsPrice[j] == undefined || 
+                    this.rowsPrice[j] == "" || this.rowsPrice[j] == oldval){
+                    this.$set(this.rowsPrice, j, newval)
+                }else{
+                    break;
+                }
+            }
+
+            this.$set(this.rowsPrice, i, newval)
+        },
+
         new_date(){
 
-            this.movie.chart.push({date:"", times:[]})
+            this.concert.chart.push({date:"", times:[]})
 
         },
         
 		remove_date(i){
 
-            this.movie.chart.splice(i,1)
+            this.concert.chart.splice(i,1)
            // this.$http.get("api/delete_showtime", {params:{ id: }})
 
         },
 
-        progress(p){
+      /*  progress(p){
             if (p.lengthComputable) {
                // this.saveLoading = true
                 this.loadingProgress =  "%"+ Math.round(p.loaded / p.total * 100 )
@@ -249,7 +243,7 @@ export default {
 
         
         }
-
+*/
 
 	},
 
@@ -259,10 +253,11 @@ export default {
         let id = this.$route.query.id;
         if(id){
             setTimeout(()=>{
-                this.$http.get("api/get_movies?id="+id).then((res)=>{
+                this.$http.get("api/get_concerts?id="+id).then((res)=>{
 
                     this.loading = false;
-                    this.movie = res.body; 
+                    this.concert = res.body; 
+                    this.rowsPrice = this.concert.prices_list.split(' ');
                     console.log(res.body)
                    
                 })

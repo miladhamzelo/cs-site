@@ -69,7 +69,7 @@
 
 <script>
 	
-import ticketView from '../ticketView.vue'
+import ticketView from '../../components/ticketView.vue'
 export default {
 
     props : ["inSelfService"],

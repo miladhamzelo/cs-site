@@ -63,8 +63,8 @@
 <script>
     
 import sendForm from './libs/send_form.js'
-import tinymce from './com/tinymce.vue'
-import imageInput from './com/imageInput.vue'
+import tinymce from '../../components/tinymce.vue'
+import imageInput from '../../components/imageInput.vue'
 
 
 export default {

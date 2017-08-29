@@ -1,10 +1,10 @@
 
-import sandaliha from './sandaliha.vue'
-import sansha from './sansha.vue'
-import imgPro from '../imgPro.vue'
+import sandaliha from '../components/sandaliha.vue'
+import sansha from '../components/sansha.vue'
+import imgPro from '../components/imgPro.vue'
 
 
-import forgetPass from '../forgetPass.vue'
+import forgetPass from '../components/forgetPass.vue'
 
 
 module.exports = {
