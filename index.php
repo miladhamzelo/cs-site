@@ -51,12 +51,15 @@ $ctrl = empty($ctrl)? "index" : $ctrl;
 $param = array_slice($url,1); 
 
 
+$routes = [];
+
 require("source/functions.php");
 require 'source/defines.php';
+//require 'app/routes.php';
 require 'configs.php';
 
 
-
+/*
 $hasController = false;
 $method  = 'index';
 
@@ -69,7 +72,6 @@ if(file_exists("app/${ctrl}Controller.php")){
 
 	require "app/controller.php";
 }
-
 
 
 SERVER("param", $param);
@@ -109,7 +111,7 @@ if(function_exists($ctrl_name1)) {
 
 
 $_SESSION['flash_data'] = [];
-
+*/
 //=========================================================================================
 
 ?>

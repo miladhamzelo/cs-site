@@ -59,28 +59,6 @@ $blade_factory = new Factory($resolver, new FileViewFinder($file, $path));
 // if your view file extension is not php or blade.php, use this to add it
 $blade_factory->addExtension('tpl', 'blade');
 
-/*
-
-$blade_path = ['./app/view'];         // your view file path, it's an array
-$blade_cachePath = './app/cache/view';     // compiled file path
-
-$blade_compiler = new \Xiaoler\Blade\Compilers\BladeCompiler($blade_cachePath);
-
-// you can add a custom directive if you want
-require 'source/custom.bladeDirectives.php';
-
-$blade_engine = new \Xiaoler\Blade\Engines\CompilerEngine($blade_compiler);
-$blade_finder = new \Xiaoler\Blade\FileViewFinder($blade_path);
-
-// if your view file extension is not php or blade.php, use this to add it
-$blade_finder->addExtension('tpl');
-
-// get an instance of factory
-$blade_factory = new \Xiaoler\Blade\Factory($blade_engine, $blade_finder);
-
-
-*/
-
 
 /***************************************
 
@@ -138,6 +116,59 @@ connect_to_db ([
 only_show_if_site_down([ "admin-panel" , "self-service"]);
 
 
+
+
+/***************************************
+
+	@ Prevent show specify pages when site is down.
+
+		this is description forthis section
+		and another description in continue.
+
+*/
+
+
+
+$dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
+ //   $r->addRoute('GET', '/users', 'get_all_users_handler');
+	/*global $routes;
+	foreach ($routes as $route) {
+		$r->addRoute($route["method"], $route["uri"], $route["ctrl"]);
+	}*/
+	require 'app/routes.php';
+});
+
+// Fetch method and URI from somewhere
+$httpMethod = $_SERVER['REQUEST_METHOD'];
+//$uri = $_SERVER['REQUEST_URI'];
+
+$uri = rawurldecode("/".implode("/",$url));
+// echo "$uri ";
+$routeInfo = $dispatcher->dispatch($httpMethod, $uri);
+switch ($routeInfo[0]) {
+    case FastRoute\Dispatcher::NOT_FOUND:
+        // ... 404 Not Found.
+
+        break;
+    case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
+        $allowedMethods = $routeInfo[1];
+        // ... 405 Method Not Allowed
+        
+        break;
+    case FastRoute\Dispatcher::FOUND:
+    	$vars = $routeInfo[2];
+    	$path = explode(".", $routeInfo[1]);
+        $method = array_pop($path);
+        $path = implode("/", $path);
+        //echo "app/controllers/${path}.php";
+        require "app/controllers/${path}.php";
+        if(function_exists($method)){
+        	$method($vars);
+        }
+        
+
+        break;
+}
 
 
 

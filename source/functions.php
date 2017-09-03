@@ -1,6 +1,12 @@
 <?php
 
 
+function route($method, $uri, $ctrl){
+	global $routes;
+	$routes[] = ["method"=>$method, "uri"=>$uri, "ctrl"=>$ctrl];
+}
+
+
 function alternative($ctrl){
 
 	if(function_exists($ctrl)){

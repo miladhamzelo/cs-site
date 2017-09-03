@@ -23,7 +23,7 @@ var globs2 = ['*','**','*.*','**/*.*','**/.*','!app/src/**/.*','!app/src/**','!.
 
 gutil.log(config)
 
-var connTest = ftp.create( {
+var connTest = ftp.create({
     host:     'test.cinemasetareh.ir',
     user:     config.username,
     password: config.password,
@@ -32,7 +32,7 @@ var connTest = ftp.create( {
     log:      gutil.log
 });
 
-var conn = ftp.create( {
+var conn = ftp.create({
     host:     'cinemasetareh.ir',
     user:     config.username,
     password: config.password,

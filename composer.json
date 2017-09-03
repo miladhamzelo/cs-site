@@ -5,7 +5,8 @@
     "require": {
         "wixel/gump": "dev-master",
         "xiaoler/blade": "5.4.3",
-        "kavenegar/php": "^1.2"
+        "kavenegar/php": "^1.2",
+        "nikic/fast-route": "^1.2"
     },
     "authors": [
         {
