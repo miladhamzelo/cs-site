@@ -129,14 +129,17 @@ only_show_if_site_down([ "admin-panel" , "self-service"]);
 
 
 
-$dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
+$dispatcher = FastRoute\cachedDispatcher(function(FastRoute\RouteCollector $r) {
  //   $r->addRoute('GET', '/users', 'get_all_users_handler');
 	/*global $routes;
 	foreach ($routes as $route) {
 		$r->addRoute($route["method"], $route["uri"], $route["ctrl"]);
 	}*/
 	require 'app/routes.php';
-});
+},[
+    'cacheFile' => __DIR__ . '/app/cache/route/route.cache', /* required */
+    'cacheDisabled' => true,     /* optional, enabled by default */
+]);
 
 // Fetch method and URI from somewhere
 $httpMethod = $_SERVER['REQUEST_METHOD'];
@@ -156,6 +159,7 @@ switch ($routeInfo[0]) {
         
         break;
     case FastRoute\Dispatcher::FOUND:
+    print_r($routeInfo);
     	$vars = $routeInfo[2];
     	$path = explode(".", $routeInfo[1]);
         $method = array_pop($path);
