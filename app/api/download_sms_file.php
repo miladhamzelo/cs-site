@@ -5,7 +5,7 @@ global $db;
 $numbers = $db->select("numbers");
 $txt_numbers = "";
 foreach ($numbers as $n) {
-	$txt_numbers .= $n['number']."\n";
+	$txt_numbers .= $n['number']."\r\n";
 }
 
 //$filename = "/tmp/numbers.txt"

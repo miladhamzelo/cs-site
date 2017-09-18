@@ -3,6 +3,8 @@
 global $db;
 global $validator;
 
+
+$_POST  = $_REQUEST;
 $res = [];
 $res["status"]  = "1";
 

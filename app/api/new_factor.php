@@ -73,8 +73,6 @@ if($res['status'] == "1"){
 
 
 
-
-
 	$fields = array(
 		"user_id" => $_POST['uid'],
 		"movie_id" => $_POST['mid'],
@@ -86,10 +84,11 @@ if($res['status'] == "1"){
 		"date" => $date,
 		"time" => $time,
 		"code" => $code,
-		"is_half_price" => $is_half_price,
+		"is_half_price" => $is_half_price ? 1 : 0,
 		"bought" => $bought
 	);
 
+//print_r($fields);
 
 	if(!$db->insert("Factors", $fields)){
 

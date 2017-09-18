@@ -58,13 +58,14 @@ export default {
             work : {},
 
             
-
+    
     
         }
     },
 
 	methods : {
 
+        
 
 	},
 
@@ -74,9 +75,11 @@ export default {
         setTimeout(()=>{
             this.$http.get("api/get_work_status").then((res)=>{
 
-                this.loading = false;
                 this.work = res.body; 
                 console.log(res.body)
+
+                this.loading = false;
+            
                
             })
         },1000)
@@ -87,7 +90,7 @@ export default {
     computed : {
        
 
-    }
+    },
 }
 
 

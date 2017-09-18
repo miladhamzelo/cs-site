@@ -176,7 +176,30 @@ function _default(){
 }
 
 
+function android_install(){
+	global $db;
 
+	$data = array_pop($db->run("select * from Data where name='setting'"));
+	
+	if(!empty($data)){
+		$apk = json_decode($data["data"])->contact->bazar;
+	}
+//die($apk);
+		/*header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename='.basename($apk));
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate');
+		header('Pragma: public');
+		header('Content-Length: ' . filesize($apk));
+		readfile($apk);
+		exit;
+
+	}else{
+		die("download error");
+	}*/
+	
+	view("android-install",["apk_path" => $apk]);
+}
 
 function index(){
 
@@ -239,8 +262,8 @@ function finishPay(){
 
 	mylog($uid, "finishPay is load");
 
-	//if(empty($f) || (int)$f['bought'] == 0)
-	//	$status = 0;
+	if(empty($f) || (int)$f['bought'] == 0)
+		$status = 0;
 
 	mylog($uid, "finishPay status is $status");
 
@@ -466,7 +489,7 @@ function self_service_concert(){
 	if(!empty($_COOKIE['cinema-setareh-admin-id'])){
 
 		SERVER("entity", "concert");
-		SERVER("ctrl", "self_service");
+		SERVER("ctrl", "self-service");
 		view("self_service");
 
 
@@ -511,8 +534,53 @@ function news($p){
 
 	}else{
 
-		$data = $db->run("select * from news order by id asc");
-		view("news", ["news" => $data]);
+		
+		$limit = empty($_GET['limit'])? 4 : $_GET['limit'];
+	    $page = $_GET["page"]? $_GET["page"] : 1;
+
+	    $total = count($db->run('select * from news'));
+	   
+	    // How many pages will there be
+	    $pages = ceil($total / $limit);
+
+	
+	   	$start = (($page-1) * $limit);
+	    
+
+
+		$news = $db->run("SELECT * FROM news ORDER BY id DESC LIMIT ${limit} OFFSET ${start}");
+
+
+		$step = 4;
+
+		//$res["pg"]["step"] = $step;
+		$res["pg"]["page"] = $page;
+		$res["pg"]["last"] = $pages;
+		$res["pg"]["start"] = $page-$step < 1 ? 1 : $page-$step;
+		$res["pg"]["end"] = $page+$step > $pages ? $pages : $page+$step;
+		
+
+//
+		if($res["pg"]["start"] < $step){
+			$diff = abs($res["pg"]["start"] - $step)+1;
+		
+			//print($diff);
+			$res["pg"]["end"] = $res["pg"]["end"]+$diff > $pages ? $pages : $res["pg"]["end"]+$diff;
+		}
+		if($pages - $res["pg"]["end"] < $step){
+			$diff = abs($res["pg"]["end"] - $pages) > $step ? $step : abs($res["pg"]["end"] - $pages);
+			//print($diff);
+			//die("$total");
+			$res["pg"]["start"] = $res["pg"]["start"]-$diff < 1 ? 1 : $res["pg"]["start"]-$diff;
+		}
+		$res["news"] = $news;
+
+		if($_GET["page"] && empty($news)){
+			page_404();
+		}
+//print_r($res);die();
+
+		view("news", ["data" => $res]);
 	}
 
 
@@ -576,7 +644,7 @@ function login($p){
 
 function api($p){
 
-	//header('Content-Type: application/json');
+	header('Content-Type: application/json');
 
 	empty($p[0]) and die("page not found api1");
 	$path = implode($p, '/');

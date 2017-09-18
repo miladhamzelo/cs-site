@@ -72,7 +72,7 @@
 
         <li>
 
-            <a href="<?php echo e($bazar); ?>" target="_blank"><img src="<?php echo e(assets); ?>img/android.png"></a>
+            <a href="android-install" target="_blank"><img src="<?php echo e(assets); ?>img/android.png"></a>
 
         </li>
 

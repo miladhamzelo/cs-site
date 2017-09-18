@@ -20,6 +20,11 @@ module.exports = {
   methods : {
 
     sendMobile(){
+
+      if(this.mobile.length != 11){
+        alert("شماره باید ۱۱ رقمی به همراه صفر باشد.")
+        return
+      }
      
       var el = this.$refs.mobileDialog
       el.style.display = "block"

@@ -15655,9 +15655,10 @@
 	        setTimeout(function () {
 	            _this.$http.get("api/get_work_status").then(function (res) {
 
-	                _this.loading = false;
 	                _this.work = res.body;
 	                console.log(res.body);
+
+	                _this.loading = false;
 	            });
 	        }, 1000);
 	    },
@@ -18177,7 +18178,7 @@
 
 
 	// module
-	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 	// exports
 
@@ -18217,7 +18218,9 @@
 	        data: {}
 	      },
 
-	      loading: false,
+	      loading: true,
+
+	      siteEnabled: true,
 
 	      setting: {
 
@@ -18243,19 +18246,49 @@
 	    this.$http.get("api/get_data", { params: { name: "setting" } }).then(function (res) {
 	      console.log(res);
 	      if (res.body != "") _this.setting = JSON.parse(br2nl(res.body.data));
-	    });
 
-	    this.$http.get("api/get_all_showtimes").then(function (res) {
-	      console.log(res);
-	      if (res.body.showTimes) {
-	        res.body.showTimes.some(function (el) {
-	          _this.sansha.push(el.time);
+	      _this.$http.get("api/get_all_showtimes").then(function (res) {
+	        console.log(res);
+	        if (res.body.showTimes) {
+	          res.body.showTimes.some(function (el) {
+	            _this.sansha.push(el.time);
+	          });
+	        }
+
+	        _this.$http.get("api/site_enabled_status").then(function (res) {
+
+	          if (res.body.status == "1") {
+	            _this.siteEnabled = true;
+	          } else {
+	            _this.siteEnabled = false;
+	          }
+	          _this.loading = false;
 	        });
-	      }
+	      });
 	    });
 	  },
 
 	  methods: {
+	    toggleSiteActivity: function toggleSiteActivity(el) {
+	      var _this2 = this;
+
+	      var elm = $(el.target);
+	      elm.prop("disabled", true);
+	      setTimeout(function () {
+
+	        if (_this2.siteEnabled == false) {
+	          _this2.$http.get("api/site_up").then(function () {
+	            _this2.siteEnabled = true;
+	            elm.prop("disabled", false);
+	          });
+	        } else {
+	          _this2.$http.get("api/site_down").then(function () {
+	            _this2.siteEnabled = false;
+	            elm.prop("disabled", false);
+	          });
+	        }
+	      }, 1000);
+	    },
 	    save: function save() {
 
 	      this.form.data = (0, _stringify2.default)(this.setting);
@@ -18278,6 +18311,19 @@
 	  }
 
 	}; //
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
 	//
 	//
 	//
@@ -18724,7 +18770,27 @@
 	        "value": s
 	      }
 	    })])])
-	  }))])])])])])]), _vm._v(" "), _c('button', {
+	  }))])])])])])]), _vm._v(" "), _c('div', {
+	    staticClass: "row"
+	  }, [_c('div', {
+	    staticClass: "col-lg-12"
+	  }, [_c('section', {
+	    staticClass: "panel"
+	  }, [_c('header', {
+	    staticClass: "panel-heading"
+	  }, [_vm._v(" کنترل وضعیت ")]), _vm._v(" "), _c('div', {
+	    staticClass: "panel-body"
+	  }, [(_vm.siteEnabled) ? _c('button', {
+	    staticClass: "btn btn-danger",
+	    on: {
+	      "click": _vm.toggleSiteActivity
+	    }
+	  }, [_vm._v("غیرفعال کردن سایت")]) : _c('button', {
+	    staticClass: "btn btn-success",
+	    on: {
+	      "click": _vm.toggleSiteActivity
+	    }
+	  }, [_vm._v("فعال کردن سایت")])])])])]), _vm._v(" "), _c('button', {
 	    staticClass: "btn btn-primary",
 	    attrs: {
 	      "type": "button"
@@ -29588,6 +29654,11 @@
 	    sendMobile: function sendMobile() {
 	      var _this = this;
 
+	      if (this.mobile.length != 11) {
+	        alert("شماره باید ۱۱ رقمی به همراه صفر باشد.");
+	        return;
+	      }
+
 	      var el = this.$refs.mobileDialog;
 	      el.style.display = "block";
 
@@ -29830,6 +29901,7 @@
 	        _this3.$http.post('api/new_factor', data).then(function (res) {
 	          console.log("Factor :");
 	          console.log(res);
+	          console.log(data);
 	          if (res.body.status == "1") {
 	            _this3.get_sold_chairs(_this3.showtime.uniqe_id, function () {
 	              _this3.currentTicketCode = "" + res.body.code;

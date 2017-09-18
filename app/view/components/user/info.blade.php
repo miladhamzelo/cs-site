@@ -9,7 +9,7 @@
   <div class="form-group">
       <label class="col-sm-2 control-label">شماره موبایل</label>
       <div class="col-sm-10">
-          <input type="text" name="mobile" value="{{ $user['phone'] }}" class="form-control" placeholder="شماره موبایل"> 
+          <input type="text" disabled name="mobile" value="{{ $user['phone'] }}" class="form-control" placeholder="شماره موبایل"> 
       </div>
   </div>
 

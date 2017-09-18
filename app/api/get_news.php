@@ -10,23 +10,12 @@ $res = [];
 
 if(empty($_GET['id'])){
 
-	if(!empty($_GET['count'])){
-
-		$top = $_GET['count'];
 
 
-		$news = $db->run("SELECT TOP ${count} * FROM news");
+	$news = $db->run("select * from news order by id desc");
 
-		$res = $news;
-
-	}else{
-
-
-		$news = $db->run("select * from news order by id desc");
-
-		$res = $news;
-		
-	}
+	$res = $news;
+	
 
 
 }else{

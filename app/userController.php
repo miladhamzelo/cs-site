@@ -52,7 +52,7 @@ function dashboard(){
 
 	$user = array_pop($db->select("users", "id = :id", ["id" => $user_id]));
 
-	$factors = $db->select("Factors", "user_id = :userId AND bought = 1", ["userId" => $user["id"]]);
+	$factors = $db->select("Factors", "user_id = :userId AND bought = 1 AND movie_type = 'film'" , ["userId" => $user["id"]]);
 
 	$all_factors_count = count($factors);
 	$is_half_price_factors_count = 0;
@@ -177,7 +177,7 @@ function change_info(){
 	$user_id = $_SESSION['user_id'];
 
 	$db->update("users", 
-		["fullName" => $_POST['name'], "phone" => $_POST['mobile']],
+		["fullName" => $_POST['name']/*, "phone" => $_POST['mobile']*/],
 		 "id = :id", ["id" => $user_id]);
 
 	flash(compact("status"));

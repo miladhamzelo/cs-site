@@ -80,6 +80,8 @@ module.exports = {
       this.loadingSans = false
       this.loadingWrapper = false
 
+
+
       setTimeout(()=>{
 
         let params = {
@@ -203,6 +205,7 @@ module.exports = {
           this.$http.post('api/new_factor',data ).then(res => {
               console.log("Factor :")
               console.log(res)
+              console.log(data)
               if(res.body.status == "1"){
                 this.get_sold_chairs(this.showtime.uniqe_id,()=>{
                   this.currentTicketCode = ""+res.body.code

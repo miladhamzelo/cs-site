@@ -117,6 +117,19 @@
 	            </section>
 	        </div>
 	    </div>
+	    
+	    <div class="row">
+	        <div class="col-lg-12">
+	            <section class="panel">
+	                <header class="panel-heading"> کنترل وضعیت </header>
+	                <div class="panel-body">
+	                    <button v-if="siteEnabled" class="btn btn-danger" @click="toggleSiteActivity">غیرفعال کردن سایت</button>
+	                    <button v-else class="btn btn-success" @click="toggleSiteActivity">فعال کردن سایت</button>
+	                </div>
+	            </section>
+	        </div>
+	    </div>
+
 	    <button type="button" class="btn btn-primary" @click="save">ذخیره</button>
 	</div>
 </div>
@@ -142,7 +155,9 @@ export default {
                 data : {}
 			},
 			
-			loading : false,
+			loading: true,
+            
+            siteEnabled : true,
 
 			setting : {
 
@@ -162,24 +177,67 @@ export default {
 	
 		}
 	},
+
+
+
 	created() {
 		this.$http.get("api/get_data",{params:{name:"setting"}})
         .then(res=>{
             console.log(res)
             if(res.body != "")
            		this.setting = JSON.parse(br2nl(res.body.data))
+
+           	this.$http.get("api/get_all_showtimes").then(res=>{
+	            console.log(res)
+	           	if(res.body.showTimes){
+	           		res.body.showTimes.some(el=>{
+	           			this.sansha.push(el.time)
+	           		})
+	           	}
+
+	           	this.$http.get("api/site_enabled_status").then(res=>{
+
+		            if(res.body.status == "1"){
+		                this.siteEnabled = true;
+
+		            }else{
+		                this.siteEnabled = false
+		                
+		            }
+		            this.loading = false;
+		        })
+	        })
+
         })
 
-		this.$http.get("api/get_all_showtimes").then(res=>{
-            console.log(res)
-           	if(res.body.showTimes){
-           		res.body.showTimes.some(el=>{
-           			this.sansha.push(el.time)
-           		})
-           	}
-        })
+
+      
+
+       
+      
+    
 	},
 	methods : {
+
+		 toggleSiteActivity(el){
+            var elm = $(el.target)
+            elm.prop("disabled",true)
+            setTimeout(()=>{
+
+                if(this.siteEnabled == false){
+                    this.$http.get("api/site_up").then(()=>{
+                        this.siteEnabled = true;
+                        elm.prop("disabled",false)
+                    })
+                }else{
+                    this.$http.get("api/site_down").then(()=>{
+                        this.siteEnabled = false;
+                        elm.prop("disabled",false)
+                    })
+                }
+
+            },1000)     
+        },
 		
         save(){
         	

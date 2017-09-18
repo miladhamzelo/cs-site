@@ -75,7 +75,7 @@
 
         <li>
 
-            <a href="{{ $bazar }}" target="_blank"><img src="{{ assets }}img/android.png"></a>
+            <a href="android-install" target="_blank"><img src="{{ assets }}img/android.png"></a>
 
         </li>
 
